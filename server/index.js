@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import connectDB from "./database/database.js";
+import router from "./routes/routes.js";
 
 const app = express();
 
@@ -11,6 +12,10 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.json());
+
+app.use("/api/v1", router);
 
 const startServer = async () => {
   try {
