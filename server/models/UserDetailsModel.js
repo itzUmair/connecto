@@ -64,15 +64,10 @@ const userDetailsSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.String,
         },
       ],
-      validate: [interestsLength, "{PATH} exceeds the limit of 10"],
     },
   },
   { collection: "user_details" }
 );
-
-const interestsLength = (number) => {
-  return number > 10;
-};
 
 const userDetailsModel = mongoose.model("userDetailsModel", userDetailsSchema);
 

@@ -10,7 +10,7 @@ const userAuthSchema = new mongoose.Schema(
       ref: "userDetailsModel",
     },
   },
-  { collation: "user_auth" }
+  { collection: "user_auth" }
 );
 
 const userAuthModel = mongoose.model("userAuthModel", userAuthSchema);
