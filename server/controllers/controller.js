@@ -346,7 +346,6 @@ export const likePost = async (req, res) => {
 export const dislikePost = async (req, res) => {
   const { userid, postid } = req.body;
 
-  const uid = new mongoose.Types.ObjectId(userid);
   const pid = new mongoose.Types.ObjectId(postid);
 
   try {
@@ -365,10 +364,6 @@ export const dislikePost = async (req, res) => {
     }
     res.status(500).send({ error: "something went wrong" });
   }
-};
-
-export const sharePost = async (req, res) => {
-  // TODO
 };
 
 export const commentOnPost = async (req, res) => {

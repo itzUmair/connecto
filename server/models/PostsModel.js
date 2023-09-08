@@ -64,13 +64,6 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.String,
       required: true,
     },
-    shares: {
-      type: mongoose.Schema.Types.Number,
-      default: 0,
-    },
-    sharer: {
-      type: mongoose.Schema.Types.ObjectId,
-    },
   },
   { collection: "posts" }
 );
