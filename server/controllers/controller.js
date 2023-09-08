@@ -322,11 +322,49 @@ export const getFeed = async (req, res) => {
 };
 
 export const likePost = async (req, res) => {
-  // TODO
+  const { userid, postid } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const pid = new mongoose.Types.ObjectId(postid);
+
+  try {
+    const post = await postsModel.findById(pid);
+
+    post.likes.push(uid);
+    await post.save();
+
+    res.status(201).send({ message: "post liked successfully" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
 };
 
 export const dislikePost = async (req, res) => {
-  // TODO
+  const { userid, postid } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const pid = new mongoose.Types.ObjectId(postid);
+
+  try {
+    const post = await postsModel.findById(pid);
+
+    const newLikes = post.likes.filter((like) => like.toString() !== userid);
+
+    post.likes = newLikes;
+    await post.save();
+
+    res.status(201).send({ message: "post disliked successfully" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
 };
 
 export const sharePost = async (req, res) => {
