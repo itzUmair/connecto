@@ -275,6 +275,18 @@ export const addPost = async (req, res) => {
   }
 };
 
+export const deletePost = async (req, res) => {
+  const { postid } = req.body;
+
+  const id = new mongoose.Types.ObjectId(postid);
+  try {
+    await postsModel.findByIdAndDelete(id);
+    res.status(200).send({ message: "post deleted successfully" });
+  } catch (error) {
+    res.status(500).send("something went wrong");
+  }
+};
+
 export const getFeed = async (req, res) => {
   const { userid } = req.params;
   const id = new mongoose.Types.ObjectId(userid);
@@ -307,4 +319,20 @@ export const getFeed = async (req, res) => {
   } catch (error) {
     res.status(500).send("something went wrong");
   }
+};
+
+export const likePost = async (req, res) => {
+  // TODO
+};
+
+export const dislikePost = async (req, res) => {
+  // TODO
+};
+
+export const sharePost = async (req, res) => {
+  // TODO
+};
+
+export const commentOnPost = async (req, res) => {
+  // TODO
 };

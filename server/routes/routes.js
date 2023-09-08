@@ -12,6 +12,7 @@ router.route("/friend/request/cancel").post(Controllers.cancelFriendRequest);
 router.route("/friend/request/accept").post(Controllers.addFriend);
 router.route("/friend/remove").post(Controllers.removeFriend);
 router.route("/post/create").post(Controllers.addPost);
+router.route("/post/delete").post(Controllers.deletePost);
 
 router.route("/feed/get/:userid").get(Controllers.getFeed);
 export default router;
