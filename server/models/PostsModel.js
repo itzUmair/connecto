@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema(
   {
+    text: {
+      type: mongoose.Schema.Types.String,
+      maxLength: 200,
+    },
     image: {
       type: [
         {

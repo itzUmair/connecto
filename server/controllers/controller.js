@@ -36,7 +36,6 @@ export const signin = async (req, res) => {
 
     res.status(200).send({ token: accessToken });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "something went wrong" });
   }
 };
@@ -252,6 +251,30 @@ export const removeFriend = async (req, res) => {
   }
 };
 
+export const addPost = async (req, res) => {
+  const { text, image, video, userid, category } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+
+  try {
+    await postsModel.create({
+      text,
+      image,
+      video,
+      userid: uid,
+      category,
+    });
+
+    res.status(201).send({ message: "post created successfully." });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
 export const getFeed = async (req, res) => {
   const { userid } = req.params;
   const id = new mongoose.Types.ObjectId(userid);
@@ -259,25 +282,29 @@ export const getFeed = async (req, res) => {
   try {
     let feed = [];
 
-    const friends = await userDetailsModel.findById(id).select({ friends: 1 });
+    const { friends } = await userDetailsModel
+      .findById(id)
+      .select({ friends: 1 });
 
     const userPost = await postsModel.find({ userid: id });
 
     if (friends.length === 0 && userPost.length === 0) {
       res.status(200).send({ message: "Add friends to see posts" });
     } else if (friends.length > 0 && userPost.length === 0) {
-      const friendPost = postsModel
+      const friendPost = await postsModel
         .find({ userid: { $in: friends } })
         .sort({ timestamp: 1 });
       res.status(200).send({ feed: friendPost });
+    } else if (friends.length === 0 && userPost.length > 0) {
+      res.status(200).send({ feed: userPost });
     } else {
-      const friendPost = postsModel
+      const friendPost = await postsModel
         .find({ userid: { $in: friends } })
         .sort({ timestamp: 1 });
       feed = [...friendPost, ...userPost];
       res.status(200).send({ feed });
     }
-
-    console.log(feedSources);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send("something went wrong");
+  }
 };
