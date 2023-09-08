@@ -43,12 +43,6 @@ const userDetailsSchema = new mongoose.Schema(
         },
       ],
     },
-    posts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "postsModel",
-      },
-    ],
     dob: {
       type: mongoose.Schema.Types.Date,
       required: true,
