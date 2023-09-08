@@ -59,6 +59,22 @@ const userDetailsSchema = new mongoose.Schema(
         },
       ],
     },
+    friendRequestsReceived: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "userDetailsModel",
+        },
+      ],
+    },
+    friendRequestsSent: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "userDetailsModel",
+        },
+      ],
+    },
   },
   { collection: "user_details" }
 );

@@ -96,3 +96,188 @@ export const signup = async (req, res) => {
     res.status(500).send({ message: "something went wrong" });
   }
 };
+
+export const userDetails = async (req, res) => {
+  const { userid } = req.params;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+
+  try {
+    const details = await userDetailsModel.findById(uid);
+    res.status(200).send({ details });
+  } catch (error) {
+    res.status(500).send("something went wrong");
+  }
+};
+
+export const sendFriendRequest = async (req, res) => {
+  const { userid, friendid } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const fid = new mongoose.Types.ObjectId(friendid);
+
+  try {
+    const friend = await userDetailsModel.findById(fid);
+    friend.friendRequestsReceived.push(uid);
+    await friend.save();
+
+    const user = await userDetailsModel.findById(uid);
+    user.friendRequestsSent.push(fid);
+    await user.save();
+
+    res.status(200).send({ message: "friend request sent" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
+export const cancelFriendRequest = async (req, res) => {
+  const { userid, friendid, state } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const fid = new mongoose.Types.ObjectId(friendid);
+
+  try {
+    const friend = await userDetailsModel.findById(fid);
+    if (state === "sent") {
+      const newFriendRequestRecievedForFriend =
+        friend.friendRequestsReceived.filter(
+          (friend) => friend.toString() !== userid
+        );
+      friend.friendRequestsReceived = newFriendRequestRecievedForFriend;
+    } else {
+      const newFriendRequestSentForFriend = friend.friendRequestsSent.filter(
+        (friend) => friend.toString() !== userid
+      );
+      friend.friendRequestsSent = newFriendRequestSentForFriend;
+    }
+    await friend.save();
+
+    const user = await userDetailsModel.findById(uid);
+    if (state === "received") {
+      const newFriendRequestRecievedForUser =
+        user.friendRequestsReceived.filter(
+          (friend) => friend.toString() !== friendid
+        );
+      user.friendRequestsReceived = newFriendRequestRecievedForUser;
+    } else {
+      const newFriendRequestSentForUser = user.friendRequestsSent.filter(
+        (friend) => friend.toString() !== friendid
+      );
+      user.friendRequestsSent = newFriendRequestSentForUser;
+    }
+    await user.save();
+
+    res.status(200).send({ message: "friend request cancelled" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
+export const addFriend = async (req, res) => {
+  const { userid, friendid } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const fid = new mongoose.Types.ObjectId(friendid);
+
+  try {
+    const friend = await userDetailsModel.findById(fid);
+    friend.friends.push(uid);
+    const newFriendRequestSentForFriend = friend.friendRequestsSent.filter(
+      (friend) => friend.toString() !== userid
+    );
+    friend.friendRequestsSent = newFriendRequestSentForFriend;
+    await friend.save();
+
+    const user = await userDetailsModel.findById(uid);
+    const newFriendRequestReceivedForUser = user.friendRequestsReceived.filter(
+      (friend) => friend.toString() !== friendid
+    );
+    user.friendRequestsReceived = newFriendRequestReceivedForUser;
+    user.friends.push(fid);
+    await user.save();
+
+    res.status(200).send({
+      message: `${friend.fname + " " + friend.lname} and you are now friends`,
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
+export const removeFriend = async (req, res) => {
+  const { userid, friendid } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const fid = new mongoose.Types.ObjectId(friendid);
+
+  try {
+    const friend = await userDetailsModel.findById(fid);
+    const newFriendListForFriend = friend.friends.filter(
+      (friend) => friend.toString() !== userid
+    );
+    friend.friends = newFriendListForFriend;
+    await friend.save();
+
+    const user = await userDetailsModel.findById(uid);
+    const newFriendListForUser = user.friends.filter(
+      (friend) => friend.toString() !== friendid
+    );
+    user.friends = newFriendListForUser;
+    await user.save();
+
+    res.status(200).send({
+      message: `${
+        friend.fname + " " + friend.lname
+      } and you are not friends anymore`,
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
+export const getFeed = async (req, res) => {
+  const { userid } = req.params;
+  const id = new mongoose.Types.ObjectId(userid);
+
+  try {
+    let feed = [];
+
+    const friends = await userDetailsModel.findById(id).select({ friends: 1 });
+
+    const userPost = await postsModel.find({ userid: id });
+
+    if (friends.length === 0 && userPost.length === 0) {
+      res.status(200).send({ message: "Add friends to see posts" });
+    } else if (friends.length > 0 && userPost.length === 0) {
+      const friendPost = postsModel
+        .find({ userid: { $in: friends } })
+        .sort({ timestamp: 1 });
+      res.status(200).send({ feed: friendPost });
+    } else {
+      const friendPost = postsModel
+        .find({ userid: { $in: friends } })
+        .sort({ timestamp: 1 });
+      feed = [...friendPost, ...userPost];
+      res.status(200).send({ feed });
+    }
+
+    console.log(feedSources);
+  } catch (error) {}
+};
