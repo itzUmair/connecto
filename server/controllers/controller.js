@@ -3,15 +3,42 @@ import {
   userAuthModel,
   postsModel,
 } from "../models/models.js";
+
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const home = async (req, res) => {
   res.status(200).send({ message: "Connecto API. Developed by Umair." });
 };
 
 export const signin = async (req, res) => {
-  // TODO
+  const { email, password } = req.body;
+
+  try {
+    const userExists = await userAuthModel.findOne({ email });
+    if (!userExists) {
+      res.status(404).send({ error: "no account with this email was found." });
+      return;
+    }
+
+    const validPassword = await bcrypt.compare(password, userExists.password);
+
+    if (!validPassword) {
+      res.status(400).send({ error: "incorrect password" });
+      return;
+    }
+
+    const accessToken = jwt.sign(
+      userExists.userid.toString(),
+      process.env.JWT_SECRET
+    );
+
+    res.status(200).send({ token: accessToken });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "something went wrong" });
+  }
 };
 
 export const signup = async (req, res) => {
@@ -32,7 +59,7 @@ export const signup = async (req, res) => {
   try {
     const userExists = await userAuthModel.find({ email });
 
-    if (userExists.length) {
+    if (userExists.length !== 0) {
       res.status(400).send({ error: "account with this email already exists" });
       return;
     }
