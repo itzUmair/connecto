@@ -102,8 +102,9 @@ export const userDetails = async (req, res) => {
   const uid = new mongoose.Types.ObjectId(userid);
 
   try {
-    const details = await userDetailsModel.findById(uid);
-    res.status(200).send({ details });
+    const details = await userDetailsModel.findById(uid).populate("friends");
+    const posts = await postsModel.find({ userid });
+    res.status(200).send({ details, posts });
   } catch (error) {
     res.status(500).send("something went wrong");
   }
@@ -383,6 +384,28 @@ export const commentOnPost = async (req, res) => {
       return;
     }
     res.status(500).send({ error: "something went wrong" });
+  }
+};
+
+export const getCommentDetails = async (req, res) => {
+  const { postid } = req.params;
+
+  const pid = new mongoose.Types.ObjectId(postid);
+
+  try {
+    const commentDetails = await postsModel
+      .findById(pid)
+      .select({ comments: 1 })
+      .populate("comments.userid", [
+        "fname",
+        "mname",
+        "lname",
+        "profilePicURL",
+      ]);
+    res.status(200).send({ commentDetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "something went wrong" });
   }
 };
 
