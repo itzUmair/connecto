@@ -1,3 +1,25 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --primary: 256deg 75% 65%;
+    --secondary: 216deg 20% 95%;
+    --text: 0deg 4% 20%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: 256deg 75% 65%;
+      --secondary: 220deg 5% 13%;
+      --text: 216deg 20% 95%;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --primary: 256deg 75% 65%;
+    --secondary: 220deg 5% 13%;
+    --text: 216deg 20% 95%;
+  }
+}
