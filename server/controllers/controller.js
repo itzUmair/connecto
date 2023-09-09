@@ -385,3 +385,17 @@ export const commentOnPost = async (req, res) => {
     res.status(500).send({ error: "something went wrong" });
   }
 };
+
+export const searchUser = async (req, res) => {
+  const { username } = req.params;
+  const users = await userDetailsModel
+    .find()
+    .or([{ fname: username }, { mname: username }, { lname: username }]);
+
+  if (users.length === 0) {
+    res.status(404).send({ message: "no user found" });
+    return;
+  }
+
+  res.status(200).send({ users });
+};
