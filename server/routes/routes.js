@@ -15,6 +15,6 @@ router.route("/post/create").post(Controllers.addPost);
 router.route("/post/delete").post(Controllers.deletePost);
 router.route("/post/like").post(Controllers.likePost);
 router.route("/post/dislike").post(Controllers.dislikePost);
-
+router.route("/post/comment/add").post(Controllers.commentOnPost);
 router.route("/feed/get/:userid").get(Controllers.getFeed);
 export default router;

@@ -367,5 +367,21 @@ export const dislikePost = async (req, res) => {
 };
 
 export const commentOnPost = async (req, res) => {
-  // TODO
+  const { userid, postid, comment } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+  const pid = new mongoose.Types.ObjectId(postid);
+
+  try {
+    const post = await postsModel.findById(pid);
+    post.comments.push({ userid: uid, comment });
+    await post.save();
+    res.status(201).send({ message: "commented successfully" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
 };
