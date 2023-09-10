@@ -6,7 +6,15 @@ export default {
       colors: {
         primary: "hsl(var(--primary) / <alpha-value>)",
         secondary: "hsl(var(--secondary) / <alpha-value>)",
-        text: "hsl(var(--text) / <alpha-value>)",
+        content: "hsl(var(--content) / <alpha-value>)",
+        accent: "hsl(var(--accent) / <alpha-value>)",
+        gradient: {
+          1: "#8562E9",
+          2: "#5DC1EC",
+        },
+      },
+      fontFamily: {
+        primary: ["Poppins", "sans-serif"],
       },
     },
   },

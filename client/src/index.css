@@ -6,20 +6,50 @@
   :root {
     --primary: 256deg 75% 65%;
     --secondary: 216deg 20% 95%;
-    --text: 0deg 4% 20%;
+    --content: 0deg 4% 20%;
+    --accent: 252deg 8% 88%;
+    --btn-gradient: linear-gradient(267deg, #8562e9 1.01%, #5dc1ec 99.12%);
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
       --primary: 256deg 75% 65%;
       --secondary: 220deg 5% 13%;
-      --text: 216deg 20% 95%;
+      --content: 216deg 20% 95%;
+      --accent: 220deg 3% 21%;
     }
   }
 
   :root[data-theme="dark"] {
     --primary: 256deg 75% 65%;
     --secondary: 220deg 5% 13%;
-    --text: 216deg 20% 95%;
+    --content: 216deg 20% 95%;
+    --accent: 220deg 3% 21%;
+  }
+
+  :root[data-theme="light"] {
+    --primary: 256deg 75% 65%;
+    --secondary: 216deg 20% 95%;
+    --content: 0deg 4% 20%;
+    --accent: 252deg 8% 88%;
+  }
+
+  :root[data-theme="dark"] input {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: hsl(var(--secondary));
+    @apply font-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.8rem;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: gray;
   }
 }
