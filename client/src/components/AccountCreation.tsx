@@ -2,7 +2,7 @@ import RightIcon from "../assets/right.svg";
 
 const AccountCreation = () => {
   return (
-    <div className="flex flex-col items-center text-center gap-y-2 text-content">
+    <div className="flex flex-col items-center text-center gap-y-2 text-content md:w-96 md:mx-auto">
       <img src={RightIcon} />
       <h3 className="text-2xl font-bold">Hurray!</h3>
       <p>

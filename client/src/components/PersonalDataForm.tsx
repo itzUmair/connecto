@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import * as Types from "../Types";
 import locations from "../constants/location.json";
 import interests from "../constants/interest.json";
-import { ErrorBoundary } from "react-error-boundary";
 
 const PersonalDataForm = ({
   personData,
@@ -115,7 +114,7 @@ const PersonalDataForm = ({
   };
 
   return (
-    <form className="flex flex-col gap-y-2 w-full pb-8">
+    <form className="flex flex-col gap-y-2 w-full pb-8 md:w-96 md:mx-auto">
       <h3 className="font-semibold text-content">Tell us about yourself</h3>
       <div>
         <label htmlFor="fname" className="text-content block text-sm">
@@ -192,8 +191,8 @@ const PersonalDataForm = ({
           onChange={handleChange}
         >
           <option value="default">Select a country</option>
-          {Object.keys(locations).map((country) => (
-            <option key={country} value={country}>
+          {Object.keys(locations).map((country, index) => (
+            <option key={index} value={country}>
               {country}
             </option>
           ))}
@@ -213,14 +212,12 @@ const PersonalDataForm = ({
               : ""
           }
           className="bg-secondary w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary disabled:cursor-not-allowed"
-          onChange={(e) =>
-            setPersonalData({ ...personalData, city: e.target.value })
-          }
+          onChange={handleChange}
           disabled={personalData.country.length === 0}
         >
           <option value="default">Select a city</option>
-          {selectedCities.map((city) => (
-            <option key={city} value={city}>
+          {selectedCities.map((city, index) => (
+            <option key={index} value={city}>
               {city}
             </option>
           ))}
@@ -239,10 +236,10 @@ const PersonalDataForm = ({
           disabled={personalData.interest.length === 10}
         >
           <option value="default">Select a hobby</option>
-          {interests.map((interest) => {
+          {interests.map((interest, index) => {
             if (!personalData.interest.includes(interest)) {
               return (
-                <option key={interest} value={interest}>
+                <option key={index} value={interest}>
                   {interest}
                 </option>
               );

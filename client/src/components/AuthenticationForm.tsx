@@ -172,7 +172,7 @@ const AuthenticationForm = ({
   };
 
   return (
-    <form className="flex flex-col gap-y-2 w-full pb-8">
+    <form className="flex flex-col gap-y-2 w-full pb-8 md:w-96 md:mx-auto">
       <h3 className="font-semibold text-content">Your credentials</h3>
 
       <div>
