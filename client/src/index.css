@@ -46,6 +46,7 @@
   body {
     background-color: hsl(var(--secondary));
     @apply font-primary;
+    -webkit-tap-highlight-color: transparent;
   }
 
   ::-webkit-scrollbar {

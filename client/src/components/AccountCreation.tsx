@@ -1,3 +1,4 @@
+import ConfettiExplosion from "react-confetti-explosion";
 import RightIcon from "../assets/right.svg";
 
 const AccountCreation = () => {
@@ -15,6 +16,15 @@ const AccountCreation = () => {
       >
         Sign in
       </a>
+      {true && (
+        <ConfettiExplosion
+          duration={5000}
+          particleCount={200}
+          force={1}
+          width={2000}
+          particleSize={8}
+        />
+      )}
     </div>
   );
 };

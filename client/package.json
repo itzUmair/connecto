@@ -13,6 +13,7 @@
     "axios": "^1.5.0",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.6",
+    "react-confetti-explosion": "^2.1.2",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.11",
