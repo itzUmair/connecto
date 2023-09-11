@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as Types from "../Types";
 import locations from "../constants/location.json";
 import interests from "../constants/interest.json";
+import { ErrorBoundary } from "react-error-boundary";
 
 const PersonalDataForm = ({
   personData,
@@ -21,16 +22,13 @@ const PersonalDataForm = ({
   const [countryError, setCountryError] = useState<string>("");
   const [cityError, setCityError] = useState<string>("");
   const [interestError, setInterestError] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState("default");
+  const [selectedCity, setSelectedCity] = useState("default");
+  const [selectedInterest, setSelectedInterest] = useState("default");
 
   const selectedCities = personalData.country
     ? (locations as Types.LocationData)[personalData.country]
     : [];
-
-  const handleCrash = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Backspace") {
-      e.preventDefault();
-    }
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -48,15 +46,26 @@ const PersonalDataForm = ({
     } else if (e.target.name === "lname") {
       setPersonalData((prevData) => ({ ...prevData, lname: e.target.value }));
     } else if (e.target.name === "country") {
+      setSelectedCountry(e.target.value);
       setPersonalData((prevData) => ({ ...prevData, country: e.target.value }));
     } else if (e.target.name === "city") {
+      setSelectedCity(e.target.value);
       setPersonalData((prevData) => ({ ...prevData, city: e.target.value }));
     } else if (e.target.name === "dob") {
-      setPersonalData((prevData) => ({
-        ...prevData,
-        dob: new Date(e.target.value),
-      }));
+      try {
+        new Date(e.target.value).toISOString().split("T")[0];
+        setPersonalData((prevData) => ({
+          ...prevData,
+          dob: new Date(e.target.value),
+        }));
+      } catch (error) {
+        setPersonalData((prevData) => ({
+          ...prevData,
+          dob: new Date("2000-01-01"),
+        }));
+      }
     } else if (e.target.name === "interest") {
+      setSelectedInterest(e.target.value);
       setPersonalData((prevData) => ({
         ...prevData,
         interest: [...personalData.interest, e.target.value],
@@ -167,7 +176,6 @@ const PersonalDataForm = ({
           value={personalData.dob.toISOString().split("T")[0]}
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
-          onKeyDown={handleCrash}
           min="1900-01-01"
           max={new Date().toISOString().split("T")[0]}
         />
@@ -179,11 +187,11 @@ const PersonalDataForm = ({
         <label className="text-content block text-sm">Country</label>
         <select
           name="country"
-          value={personalData.country}
+          value={selectedCountry}
           className="bg-secondary w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
         >
-          <option value="">Select a country</option>
+          <option value="default">Select a country</option>
           {Object.keys(locations).map((country) => (
             <option key={country} value={country}>
               {country}
@@ -198,7 +206,7 @@ const PersonalDataForm = ({
         <label className="text-content block text-sm">City</label>
         <select
           name="city"
-          value={personalData.city}
+          value={selectedCity}
           title={
             personalData.country.length === 0
               ? "please select a country first"
@@ -210,7 +218,7 @@ const PersonalDataForm = ({
           }
           disabled={personalData.country.length === 0}
         >
-          <option value="">Select a city</option>
+          <option value="default">Select a city</option>
           {selectedCities.map((city) => (
             <option key={city} value={city}>
               {city}
@@ -225,12 +233,12 @@ const PersonalDataForm = ({
         <label className="text-content block text-sm">Hobby</label>
         <select
           name="interest"
-          value={personalData.interest}
+          value={selectedInterest}
           className="bg-secondary w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary disabled:cursor-not-allowed"
           onChange={handleChange}
           disabled={personalData.interest.length === 10}
         >
-          <option value="">Select a hobby</option>
+          <option value="default">Select a hobby</option>
           {interests.map((interest) => {
             if (!personalData.interest.includes(interest)) {
               return (

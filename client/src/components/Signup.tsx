@@ -3,7 +3,6 @@ import AuthenticationForm from "./AuthenticationForm";
 import PersonalDataForm from "./PersonalDataForm";
 import AccountCreation from "./AccountCreation";
 import * as Types from "../Types";
-import Logo from "../assets/logo.svg";
 
 const Signup = () => {
   const [authData, setAuthData] = useState<Types.AuthenticationForm>({
@@ -86,7 +85,7 @@ const Signup = () => {
       )}
       {page === 3 && <AccountCreation />}
       {page !== 3 && (
-        <div>
+        <div className="pb-8">
           <p className="text-content text-center">
             Already have an account? &nbsp;
             <a
