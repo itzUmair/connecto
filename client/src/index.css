@@ -38,18 +38,23 @@
     color-scheme: dark;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
   body {
     background-color: hsl(var(--secondary));
     @apply font-primary;
   }
 
   ::-webkit-scrollbar {
-    width: 0.8rem;
+    width: 0.5rem;
   }
   ::-webkit-scrollbar-track {
     background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: gray;
+    background: linear-gradient(267deg, #8562e9 1.01%, #5dc1ec 99.12%);
   }
 }

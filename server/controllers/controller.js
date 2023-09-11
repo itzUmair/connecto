@@ -50,11 +50,10 @@ export const signup = async (req, res) => {
     profilePicURL,
     profileBannerURL,
     dob,
-    interests,
+    interest,
     email,
     password,
   } = req.body;
-
   try {
     const userExists = await userAuthModel.find({ email });
 
@@ -74,7 +73,7 @@ export const signup = async (req, res) => {
       profilePicURL,
       profileBannerURL,
       dob,
-      interests,
+      interests: [...interest],
     });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -404,7 +403,6 @@ export const getCommentDetails = async (req, res) => {
       ]);
     res.status(200).send({ commentDetails });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "something went wrong" });
   }
 };

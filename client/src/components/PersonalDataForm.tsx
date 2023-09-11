@@ -4,21 +4,16 @@ import locations from "../constants/location.json";
 import interests from "../constants/interest.json";
 
 const PersonalDataForm = ({
+  personData,
   setPersonData,
   setPage,
 }: {
+  personData: Types.PersonalDataForm;
   setPersonData: React.Dispatch<React.SetStateAction<Types.PersonalDataForm>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [personalData, setPersonalData] = useState<Types.PersonalDataForm>({
-    fname: "",
-    mname: "",
-    lname: "",
-    city: "",
-    country: "",
-    dob: new Date("1900-01-01"),
-    interest: [],
-  });
+  const [personalData, setPersonalData] =
+    useState<Types.PersonalDataForm>(personData);
 
   const [fnameError, setFnameError] = useState<string>("");
   const [lnameError, setLnameError] = useState<string>("");
@@ -27,16 +22,18 @@ const PersonalDataForm = ({
   const [cityError, setCityError] = useState<string>("");
   const [interestError, setInterestError] = useState<string>("");
 
-  const [allowNext, setAllowNext] = useState<boolean>(true);
-
   const selectedCities = personalData.country
     ? (locations as Types.LocationData)[personalData.country]
     : [];
 
+  const handleCrash = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Backspace") {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     setDateError("");
     setFnameError("");
@@ -55,16 +52,10 @@ const PersonalDataForm = ({
     } else if (e.target.name === "city") {
       setPersonalData((prevData) => ({ ...prevData, city: e.target.value }));
     } else if (e.target.name === "dob") {
-      if (new Date(e.target.value) > new Date()) {
-        setDateError("Date of birth should not be in the future");
-      } else if (new Date(e.target.value).getFullYear() < 1900) {
-        setDateError("Date of birth should not be before 01-01-1900 ");
-      } else {
-        setPersonalData((prevData) => ({
-          ...prevData,
-          dob: new Date(e.target.value),
-        }));
-      }
+      setPersonalData((prevData) => ({
+        ...prevData,
+        dob: new Date(e.target.value),
+      }));
     } else if (e.target.name === "interest") {
       setPersonalData((prevData) => ({
         ...prevData,
@@ -85,9 +76,6 @@ const PersonalDataForm = ({
       return false;
     } else if (personalData.city === "") {
       setCityError("City is required");
-      return false;
-    } else if (personalData.dob === new Date("1900-01-01")) {
-      setDateError("Date of birth date is required");
       return false;
     } else if (personalData.interest.length === 0) {
       setInterestError("Please select atleast one hobby");
@@ -128,6 +116,7 @@ const PersonalDataForm = ({
           type="text"
           id="fname"
           name="fname"
+          value={personalData.fname}
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
           maxLength={20}
@@ -144,6 +133,7 @@ const PersonalDataForm = ({
           type="text"
           id="mname"
           name="mname"
+          value={personalData.mname}
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
           maxLength={20}
@@ -157,6 +147,7 @@ const PersonalDataForm = ({
           type="text"
           id="lname"
           name="lname"
+          value={personalData.lname}
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
           maxLength={20}
@@ -173,10 +164,11 @@ const PersonalDataForm = ({
           type="date"
           id="dob"
           name="dob"
+          value={personalData.dob.toISOString().split("T")[0]}
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
+          onKeyDown={handleCrash}
           min="1900-01-01"
-          defaultValue="2000-01-01"
           max={new Date().toISOString().split("T")[0]}
         />
         {dateError.length > 0 && (
@@ -249,7 +241,7 @@ const PersonalDataForm = ({
             }
           })}
         </select>
-        <div className="flex flex-wrap gap-1 w-full mt-1">
+        <div className="flex flex-wrap gap-1 w-full mt-2">
           {personalData.interest.map((interest) => (
             <p
               key={interest}
@@ -273,7 +265,6 @@ const PersonalDataForm = ({
       <button
         onClick={handleFinish}
         className="text-white py-2 mt-4 shadow-primary/70 shadow-lg bg-gradient-to-r from-gradient-1 to-gradient-2 disabled:opacity-50"
-        disabled={!allowNext}
       >
         Next
       </button>
