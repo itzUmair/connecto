@@ -23,7 +23,7 @@ const Signup = () => {
   const [page, setPage] = useState<number>(1);
 
   return (
-    <div className="px-4 pt-8 text-content">
+    <div className="px-4 pt-8 text-content 2xl:mx-auto 2xl:w-[1440px]">
       <svg
         width="120"
         height="53"

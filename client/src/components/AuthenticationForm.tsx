@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 
 import WrongIcon from "../assets/wrong.svg";
 import RightIcon from "../assets/right.svg";
+import LoaderSVG from "../assets/loader.svg";
 
 const AuthenticationForm = ({
   authData,
@@ -35,6 +36,7 @@ const AuthenticationForm = ({
   const [showHint, setShowHint] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const updateCriteria = () => {
     if (!passwordRef.current) return;
@@ -146,6 +148,7 @@ const AuthenticationForm = ({
   const handleFinish = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!verifyAuthenticationData()) return;
+    setIsLoading(true);
     setAuthData(authenticationData);
 
     try {
@@ -162,12 +165,13 @@ const AuthenticationForm = ({
           setError(responseData.error);
         }
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoBack = () => {
     setAuthData(authenticationData);
-    console.log(authenticationData);
     setPage(1);
   };
 
@@ -300,13 +304,23 @@ const AuthenticationForm = ({
       <div className="flex flex-col gap-x-2 items-center justify-end">
         <button
           onClick={handleFinish}
-          className="text-white w-full py-2 mt-4 shadow-primary/70 shadow-lg bg-gradient-to-r from-gradient-1 to-gradient-2 disabled:opacity-50"
+          className="text-white w-full py-2 mt-4 shadow-primary/70 shadow-lg bg-gradient-to-r from-gradient-1 to-gradient-2 disabled:cursor-not-allowed"
+          disabled={isLoading}
         >
-          Create Account
+          {isLoading ? (
+            <img
+              src={LoaderSVG}
+              alt="loading..."
+              className="animate-spin opacity-100 w-6 h-6 mx-auto"
+            />
+          ) : (
+            "Create Account"
+          )}
         </button>
         <button
           onClick={handleGoBack}
-          className="py-2 mt-4 bg-gradient-to-r from-gradient-1 to-gradient-2 text-transparent bg-clip-text font-bold"
+          className="py-2 mt-4 bg-gradient-to-r from-gradient-1 to-gradient-2 text-transparent bg-clip-text font-bold disabled:cursor-not-allowed"
+          disabled={isLoading}
         >
           Go Back
         </button>
