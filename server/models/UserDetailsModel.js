@@ -31,9 +31,11 @@ const userDetailsSchema = new mongoose.Schema(
     },
     profilePicURL: {
       type: mongoose.Schema.Types.String,
+      default: "",
     },
     profileBannerURL: {
       type: mongoose.Schema.Types.String,
+      default: "",
     },
     friends: {
       type: [

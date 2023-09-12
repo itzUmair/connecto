@@ -7,18 +7,10 @@ const postSchema = new mongoose.Schema(
       maxLength: 200,
     },
     image: {
-      type: [
-        {
-          type: mongoose.Schema.Types.String,
-        },
-      ],
+      type: mongoose.Schema.Types.String,
     },
     video: {
-      type: [
-        {
-          type: mongoose.Schema.Types.String,
-        },
-      ],
+      type: mongoose.Schema.Types.String,
     },
     userid: {
       type: mongoose.Schema.Types.ObjectId,
