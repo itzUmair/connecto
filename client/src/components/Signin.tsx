@@ -70,7 +70,10 @@ const Signin = () => {
       const err = error as AxiosError;
       if (err.response) {
         const responseData = err.response.data as Types.SigninResponse;
-        if (err.response.status === 400 && responseData.error) {
+        if (
+          (err.response.status === 400 || err.response.status === 404) &&
+          responseData.error
+        ) {
           setError(responseData.error);
         }
       }
