@@ -111,6 +111,21 @@ export const userDetails = async (req, res) => {
   }
 };
 
+export const userProfilePic = async (req, res) => {
+  const { userid } = req.params;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+
+  try {
+    const url = await userDetailsModel
+      .findById(uid)
+      .select({ profilePicURL: 1 });
+    res.status(200).send({ url });
+  } catch (error) {
+    res.status(500).send("something went wrong");
+  }
+};
+
 export const sendFriendRequest = async (req, res) => {
   const { userid, friendid } = req.body;
 
