@@ -32,3 +32,14 @@ export type SignupFormData = {
 export type SignupResponse = {
   error: string;
 };
+
+export type SigninFormData = {
+  email: string;
+  password: string;
+};
+
+export type SigninResponse = {
+  error: string | undefined;
+  token: string | undefined;
+  userid: string | undefined;
+};

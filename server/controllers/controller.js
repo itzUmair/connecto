@@ -34,9 +34,11 @@ export const signin = async (req, res) => {
       process.env.JWT_SECRET
     );
 
-    res.status(200).send({ token: accessToken });
+    res
+      .status(200)
+      .send({ token: accessToken, userid: userExists.userid.toString() });
   } catch (error) {
-    res.status(500).send({ message: "something went wrong" });
+    res.status(500).send({ error: "something went wrong" });
   }
 };
 
