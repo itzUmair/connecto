@@ -76,10 +76,15 @@ export type CommentStructure = {
 };
 
 export type PostStructure = {
+  _id: string;
   text: string;
-  image: string[];
-  video: string[];
-  userid: string;
+  image: string;
+  video: string;
+  userid: {
+    fname: string;
+    lname: string;
+    profilePicURL: string;
+  };
   timestamp: Date;
   likes: string[];
   comments: CommentStructure[];
