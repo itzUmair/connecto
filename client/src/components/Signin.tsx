@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Types from "../Types";
 import api from "../api/axios";
 import { AxiosError } from "axios";
@@ -16,7 +16,7 @@ const Signin = () => {
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const [signedIn, setSignedIn] = useState<boolean>(false);
   const navigate = useNavigate();
   const signin = useSignIn();
 
@@ -63,9 +63,9 @@ const Signin = () => {
         token: response.data.token,
         expiresIn: 1440,
         tokenType: "Bearer",
-        authState: { ...response.data.userid },
+        authState: response.data.userid,
       });
-      navigate("/feed");
+      setSignedIn(true);
     } catch (error) {
       const err = error as AxiosError;
       if (err.response) {
@@ -78,6 +78,11 @@ const Signin = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!signedIn) return;
+    navigate("/feed");
+  }, [signedIn]);
 
   return (
     <div className="px-4 pt-8 text-content 2xl:mx-auto 2xl:w-[1440px]">

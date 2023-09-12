@@ -43,3 +43,45 @@ export type SigninResponse = {
   token: string | undefined;
   userid: string | undefined;
 };
+
+export type CookieStructure = {
+  _auth: string;
+  _auth_state: string;
+  _auth_storage: Date;
+  _auth_type: "Bearer";
+};
+
+export type UserStructure = {
+  fname: string;
+  mname: string;
+  lname: string;
+  location: {
+    city: string;
+    country: string;
+  };
+  profilePicURL: string;
+  profileBannerURL: string;
+  friends: string[];
+  dob: Date;
+  doj: Date;
+  interests: string[];
+  friendRequestsReceived: string[];
+  friendRequestsSent: string[];
+};
+
+export type CommentStructure = {
+  userid: string;
+  comment: string;
+  timestamp: Date;
+};
+
+export type PostStructure = {
+  text: string;
+  image: string[];
+  video: string[];
+  userid: string;
+  timestamp: Date;
+  likes: string[];
+  comments: CommentStructure[];
+  category: string;
+};
