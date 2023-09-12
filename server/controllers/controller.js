@@ -315,13 +315,15 @@ export const getFeed = async (req, res) => {
       .findById(id)
       .select({ friends: 1 });
 
-    const userPost = await postsModel.find({ userid: id });
-
+    const userPost = await postsModel
+      .find({ userid: id })
+      .populate("userid", ["fname", "lname", "profilePicURL"]);
     if (friends.length === 0 && userPost.length === 0) {
       res.status(200).send({ message: "Add friends to see posts" });
     } else if (friends.length > 0 && userPost.length === 0) {
       const friendPost = await postsModel
         .find({ userid: { $in: friends } })
+        .populate("userid", ["fname", "lname", "profilePicURL"])
         .sort({ timestamp: 1 });
       res.status(200).send({ feed: friendPost });
     } else if (friends.length === 0 && userPost.length > 0) {
@@ -329,6 +331,7 @@ export const getFeed = async (req, res) => {
     } else {
       const friendPost = await postsModel
         .find({ userid: { $in: friends } })
+        .populate("userid", ["fname", "lname", "profilePicURL"])
         .sort({ timestamp: 1 });
       feed = [...friendPost, ...userPost];
       res.status(200).send({ feed });
