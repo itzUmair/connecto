@@ -98,6 +98,7 @@ const Posts = ({
             onClick={() => {
               commentOnPost(post._id, comment);
               setIsCommenting(false);
+              setComment("");
             }}
           >
             <img src={SendIcon} alt="send" />
