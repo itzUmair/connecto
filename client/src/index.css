@@ -55,6 +55,7 @@
     background-color: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(267deg, #8562e9 1.01%, #5dc1ec 99.12%);
+    /* background: linear-gradient(267deg, #8562e9 1.01%, #5dc1ec 99.12%); */
+    background-color: hsl(var(--accent));
   }
 }

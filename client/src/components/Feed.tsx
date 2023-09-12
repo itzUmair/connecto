@@ -101,6 +101,40 @@ const Feed = () => {
     }
   };
 
+  const commentOnPost = async (
+    postID: string,
+    comment: string
+  ): Promise<void> => {
+    if (!feed) return;
+    const oldFeed = [...feed];
+    const newFeed = feed.map((post) => {
+      if (post._id === postID) {
+        const updatedPost = {
+          ...post,
+          comments: [
+            ...post.comments,
+            { userid: cookieData._auth_state, timestamp: new Date(), comment },
+          ],
+        };
+        return updatedPost;
+      } else {
+        return post;
+      }
+    });
+    setFeed(newFeed);
+    try {
+      await axios.post("/post/comment/add", {
+        postid: postID,
+        comment,
+        userid: cookieData._auth_state,
+      });
+      toast.success("Comment sent!");
+    } catch (error) {
+      toast.error("Something went wrong.");
+      setFeed(oldFeed);
+    }
+  };
+
   return (
     <div>
       <Header profilePicURL={profilepic} />
@@ -114,6 +148,7 @@ const Feed = () => {
               disLikePost={disLikePost}
               isLiking={isLiking}
               isDisLiking={isDisLiking}
+              commentOnPost={commentOnPost}
             />
           ))}
       </div>

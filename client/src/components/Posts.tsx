@@ -1,24 +1,30 @@
+import { useState } from "react";
 import * as Types from "../Types";
 import ProfilePicPlaceholder from "../assets/profile_placeholder.jpg";
 import { useCookies } from "react-cookie";
 
 import LikeIcon from "../assets/like.svg";
+import SendIcon from "../assets/send.svg";
 
 const Posts = ({
   post,
   likePost,
   disLikePost,
+  commentOnPost,
   isLiking,
   isDisLiking,
 }: {
   post: Types.PostStructure;
   likePost: (postID: string) => void;
+  commentOnPost: (postID: string, comment: string) => void;
   disLikePost: (postID: string) => void;
   isLiking: boolean;
   isDisLiking: boolean;
 }) => {
   const [cookies] = useCookies(["_auth"]);
   const cookieData = cookies as Types.CookieStructure;
+  const [isCommenting, setIsCommenting] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>("");
 
   return (
     <div className="bg-accent mb-4 py-1 rounded-md">
@@ -70,10 +76,34 @@ const Posts = ({
           )}
         </button>
         <div className="w-[1px] h-6 bg-content/50 mx-1"></div>
-        <button className="flex-1 text-content py-2 text-xs  hover:bg-content/30 transition-colors rounded-md">
+        <button
+          onClick={() => setIsCommenting((prevState) => !prevState)}
+          className="flex-1 text-content py-2 text-xs  hover:bg-content/30 transition-colors rounded-md"
+        >
           Comment
         </button>
       </div>
+      {isCommenting && (
+        <div className="flex items-center gap-x-2 p-2">
+          <textarea
+            placeholder="comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            maxLength={200}
+            className="bg-transparent w-full h-max border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
+          />
+          <button
+            className="w-6 h-6 disabled:opacity-50"
+            disabled={comment.length === 0}
+            onClick={() => {
+              commentOnPost(post._id, comment);
+              setIsCommenting(false);
+            }}
+          >
+            <img src={SendIcon} alt="send" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

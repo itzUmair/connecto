@@ -42,6 +42,7 @@ const postSchema = new mongoose.Schema(
             comment: {
               type: mongoose.Schema.Types.String,
               required: true,
+              maxLength: 200,
             },
             timestamp: {
               type: mongoose.Schema.Types.Date,
