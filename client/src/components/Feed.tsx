@@ -6,6 +6,7 @@ import axios from "../api/axios";
 import toaster from "react-hot-toast";
 import Posts from "./Posts";
 import toast from "react-hot-toast";
+import ProfileHighlight from "./ProfileHighlight";
 
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
@@ -136,21 +137,29 @@ const Feed = () => {
   };
 
   return (
-    <div>
+    <div className="2xl:mx-auto 2xl:w-[1440px]">
       <Header profilePicURL={profilepic} />
-      <div className="px-4 mt-8 w-full md:w-2/5 md:mx-auto ">
-        {feed &&
-          feed.map((post, index) => (
-            <Posts
-              key={index}
-              post={post}
-              likePost={likePost}
-              disLikePost={disLikePost}
-              isLiking={isLiking}
-              isDisLiking={isDisLiking}
-              commentOnPost={commentOnPost}
-            />
-          ))}
+      <div className="grid grid-cols-4">
+        <div className="hidden md:flex md:flex-col md:items-end md:mt-8">
+          <ProfileHighlight />
+        </div>
+        <div className="px-4 mt-8 col-span-4 md:col-span-2 md:col-start-2">
+          {feed &&
+            feed.map((post, index) => (
+              <Posts
+                key={index}
+                post={post}
+                likePost={likePost}
+                disLikePost={disLikePost}
+                isLiking={isLiking}
+                isDisLiking={isDisLiking}
+                commentOnPost={commentOnPost}
+              />
+            ))}
+        </div>
+        <div className="hidden md:flex md:flex-col md:items-start md:mt-8">
+          <p>this is friends display</p>
+        </div>
       </div>
     </div>
   );

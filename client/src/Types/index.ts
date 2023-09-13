@@ -90,3 +90,8 @@ export type PostStructure = {
   comments: CommentStructure[];
   category: string;
 };
+
+export type UserHighlightStructure = {
+  details: UserStructure;
+  posts: PostStructure[];
+};
