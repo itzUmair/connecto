@@ -457,3 +457,24 @@ export const searchUser = async (req, res) => {
 
   res.status(200).send({ users });
 };
+
+export const popularTopics = async (req, res) => {
+  try {
+    const category = await postsModel.find().select({ category: 1 }).limit(5);
+    const popularity = {};
+    category.forEach((post) => {
+      if (Object.keys(popularity).includes(post.category)) {
+        popularity[post.category] = popularity[post.category] + 1;
+      } else {
+        popularity[post.category] = 1;
+      }
+    });
+    const sortedPopularity = Object.entries(popularity).sort(
+      (x, y) => x[1] - y[1]
+    );
+
+    res.status(200).send(sortedPopularity);
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+};
