@@ -2,7 +2,7 @@ import ProfilePicPlaceholder from "../assets/profile_placeholder.jpg";
 
 const FeedSuspense = () => {
   return (
-    <div>
+    <div className="animate-pulse">
       <div className="bg-accent mb-4 py-1 rounded-md">
         <div className="flex items-center gap-x-2 p-2 border-b border-content/10">
           <img src={ProfilePicPlaceholder} className="w-8 h-8 rounded-full" />

@@ -19,6 +19,9 @@ export default {
       screens: {
         "2xl": "2560px",
       },
+      animation: {
+        pulse: " pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite ",
+      },
     },
   },
   plugins: [],
