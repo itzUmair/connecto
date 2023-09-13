@@ -1,33 +1,29 @@
 import { useState, useEffect } from "react";
 import Header from "./Header";
-import { useCookies } from "react-cookie";
 import * as Types from "../Types";
 import axios from "../api/axios";
 import toaster from "react-hot-toast";
 import Posts from "./Posts";
 import toast from "react-hot-toast";
 import ProfileHighlight from "./ProfileHighlight";
+import PopularTopics from "./PopularTopics";
 import FeedSuspense from "./FeedSuspense";
+import useUserid from "../hooks/useUserid";
 
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
   const [profilepic, setProfilepic] = useState<string>();
-  const [cookies] = useCookies(["_auth"]);
-  const cookieData = cookies as Types.CookieStructure;
   const [isLiking, setIsLiking] = useState(false);
   const [isDisLiking, setIsDisLiking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const uid = useUserid();
 
   useEffect(() => {
     setIsLoading(true);
     const getUser = async () => {
       try {
-        const responseForPP = await axios.get(
-          `/user/profilepic/${cookieData._auth_state}`
-        );
-        const responseForFeed = await axios.get(
-          `/feed/get/${cookieData._auth_state}`
-        );
+        const responseForPP = await axios.get(`/user/profilepic/${uid}`);
+        const responseForFeed = await axios.get(`/feed/get/${uid}`);
         setProfilepic(responseForPP.data.profilePicURL);
         setFeed(responseForFeed.data.feed);
         console.log(responseForFeed.data.feed);
@@ -47,10 +43,10 @@ const Feed = () => {
     const oldFeed = [...feed];
     const newFeed = feed.map((post) => {
       if (post._id === postID) {
-        if (!post.likes.includes(cookieData._auth_state)) {
+        if (!post.likes.includes(uid)) {
           const updatedPost = {
             ...post,
-            likes: [...post.likes, cookieData._auth_state],
+            likes: [...post.likes, uid],
           };
           return updatedPost;
         }
@@ -63,7 +59,7 @@ const Feed = () => {
     try {
       await axios.post("/post/like", {
         postid: postID,
-        userid: cookieData._auth_state,
+        userid: uid,
       });
     } catch (error) {
       toast.error("Something went wrong.");
@@ -79,12 +75,10 @@ const Feed = () => {
     const oldFeed = [...feed];
     const newFeed = feed.map((post) => {
       if (post._id === postID) {
-        if (post.likes.includes(cookieData._auth_state)) {
+        if (post.likes.includes(uid)) {
           const updatedPost = {
             ...post,
-            likes: [
-              ...post.likes.filter((like) => like !== cookieData._auth_state),
-            ],
+            likes: [...post.likes.filter((like) => like !== uid)],
           };
           return updatedPost;
         }
@@ -97,7 +91,7 @@ const Feed = () => {
     try {
       await axios.post("/post/dislike", {
         postid: postID,
-        userid: cookieData._auth_state,
+        userid: uid,
       });
     } catch (error) {
       toast.error("Something went wrong.");
@@ -119,7 +113,7 @@ const Feed = () => {
           ...post,
           comments: [
             ...post.comments,
-            { userid: cookieData._auth_state, timestamp: new Date(), comment },
+            { userid: uid, timestamp: new Date(), comment },
           ],
         };
         return updatedPost;
@@ -132,7 +126,7 @@ const Feed = () => {
       await axios.post("/post/comment/add", {
         postid: postID,
         comment,
-        userid: cookieData._auth_state,
+        userid: uid,
       });
       toast.success("Comment sent!");
     } catch (error) {
@@ -144,7 +138,7 @@ const Feed = () => {
   return (
     <div className="2xl:mx-auto 2xl:w-[1440px]">
       <Header profilePicURL={profilepic} />
-      <div className="grid grid-cols-4">
+      <div className="px-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <div className="hidden md:flex md:flex-col md:items-end md:mt-8">
           {!isLoading && <ProfileHighlight />}
         </div>
@@ -163,10 +157,10 @@ const Feed = () => {
               />
             ))}
           {isLoading &&
-            [1, 2, 3, 4, 5].map((suspense) => <FeedSuspense key={suspense} />)}
+            [1, 2, 3, 4].map((suspense) => <FeedSuspense key={suspense} />)}
         </div>
-        <div className="hidden md:flex md:flex-col md:items-start md:mt-8">
-          <p>this is friends display</p>
+        <div className="hidden lg:flex lg:flex-col lg:items-start lg:mt-8">
+          {!isLoading && <PopularTopics />}
         </div>
       </div>
     </div>

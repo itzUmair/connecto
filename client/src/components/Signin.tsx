@@ -85,6 +85,7 @@ const Signin = () => {
   useEffect(() => {
     if (!signedIn) return;
     navigate("/feed");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signedIn]);
 
   return (
