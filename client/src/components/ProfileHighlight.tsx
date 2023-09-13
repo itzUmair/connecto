@@ -20,7 +20,7 @@ const ProfileHighlight = () => {
       }
     };
     getUserHighlights();
-  }, []);
+  }, [uid]);
 
   return (
     <>

@@ -7,6 +7,7 @@ import toaster from "react-hot-toast";
 import Posts from "./Posts";
 import toast from "react-hot-toast";
 import ProfileHighlight from "./ProfileHighlight";
+import FeedSuspense from "./FeedSuspense";
 
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
@@ -15,8 +16,10 @@ const Feed = () => {
   const cookieData = cookies as Types.CookieStructure;
   const [isLiking, setIsLiking] = useState(false);
   const [isDisLiking, setIsDisLiking] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const getUser = async () => {
       try {
         const responseForPP = await axios.get(
@@ -30,6 +33,8 @@ const Feed = () => {
         console.log(responseForFeed.data.feed);
       } catch (error) {
         toaster.error("Something went wrong. Please try again later");
+      } finally {
+        setIsLoading(false);
       }
     };
     getUser();
@@ -141,10 +146,11 @@ const Feed = () => {
       <Header profilePicURL={profilepic} />
       <div className="grid grid-cols-4">
         <div className="hidden md:flex md:flex-col md:items-end md:mt-8">
-          <ProfileHighlight />
+          {!isLoading && <ProfileHighlight />}
         </div>
         <div className="px-4 mt-8 col-span-4 md:col-span-2 md:col-start-2">
-          {feed &&
+          {!isLoading &&
+            feed &&
             feed.map((post, index) => (
               <Posts
                 key={index}
@@ -156,6 +162,8 @@ const Feed = () => {
                 commentOnPost={commentOnPost}
               />
             ))}
+          {isLoading &&
+            [1, 2, 3, 4, 5].map((suspense) => <FeedSuspense key={suspense} />)}
         </div>
         <div className="hidden md:flex md:flex-col md:items-start md:mt-8">
           <p>this is friends display</p>
