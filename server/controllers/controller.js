@@ -111,6 +111,23 @@ export const userDetails = async (req, res) => {
   }
 };
 
+export const userHighlights = async (req, res) => {
+  const { userid } = req.params;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+
+  try {
+    const details = await userDetailsModel.findById(uid);
+    const posts = await postsModel
+      .find({ userid })
+      .sort({ timestamp: 1 })
+      .limit(1);
+    res.status(200).send({ details, posts });
+  } catch (error) {
+    res.status(500).send("something went wrong");
+  }
+};
+
 export const userProfilePic = async (req, res) => {
   const { userid } = req.params;
 

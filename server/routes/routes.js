@@ -7,6 +7,7 @@ router.route("/").get(Controllers.home);
 router.route("/signup").post(Controllers.signup);
 router.route("/signin").post(Controllers.signin);
 router.route("/user/details/:userid").get(Controllers.userDetails);
+router.route("/user/highlight/:userid").get(Controllers.userHighlights);
 router.route("/user/profilepic/:userid").get(Controllers.userProfilePic);
 router.route("/friend/request/send").post(Controllers.sendFriendRequest);
 router.route("/friend/request/cancel").post(Controllers.cancelFriendRequest);
