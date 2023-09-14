@@ -20,7 +20,7 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(authenticationMiddleware);
+// app.use(authenticationMiddleware);
 app.use(loggerMiddleware);
 app.use("/api/v1", router);
 

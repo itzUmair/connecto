@@ -293,8 +293,8 @@ export const addPost = async (req, res) => {
   try {
     await postsModel.create({
       text,
-      image,
-      video,
+      image: image ? image : "",
+      video: video ? video : "",
       userid: uid,
       category,
     });
