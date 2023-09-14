@@ -104,7 +104,7 @@ export const userDetails = async (req, res) => {
 
   try {
     const details = await userDetailsModel.findById(uid).populate("friends");
-    const posts = await postsModel.find({ userid });
+    const posts = await postsModel.find({ userid }).sort({ timestamp: -1 });
     res.status(200).send({ details, posts });
   } catch (error) {
     res.status(500).send("something went wrong");
