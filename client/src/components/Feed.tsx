@@ -13,6 +13,7 @@ import useUserid from "../hooks/useUserid";
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
   const [userPrimaryInfo, setUserPrimaryInfo] = useState<{
+    _id: string;
     fname: string;
     lname: string;
     profilePicURL: string;

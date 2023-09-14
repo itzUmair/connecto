@@ -52,6 +52,7 @@ export type CookieStructure = {
 };
 
 export type UserStructure = {
+  _id: string;
   fname: string;
   mname: string;
   lname: string;
@@ -67,6 +68,28 @@ export type UserStructure = {
   interests: string[];
   friendRequestsReceived: string[];
   friendRequestsSent: string[];
+};
+
+export type UserDetailStructure = {
+  details: {
+    _id: string;
+    fname: string;
+    mname: string;
+    lname: string;
+    location: {
+      city: string;
+      country: string;
+    };
+    profilePicURL: string;
+    profileBannerURL: string;
+    friends: UserStructure[];
+    dob: Date;
+    doj: Date;
+    interests: string[];
+    friendRequestsReceived: string[];
+    friendRequestsSent: string[];
+  };
+  posts: PostStructure[];
 };
 
 export type CommentStructure = {

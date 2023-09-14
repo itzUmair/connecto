@@ -4,6 +4,7 @@ import { RequireAuth } from "react-auth-kit";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import Feed from "./components/Feed";
+import Profile from "./components/Profile";
 import { useTheme } from "./context/themeContext";
 import { Toaster } from "react-hot-toast";
 
@@ -27,10 +28,10 @@ function App() {
           }
         />
         <Route
-          path="/profile"
+          path="/profile/:id"
           element={
             <RequireAuth loginPath="/signin">
-              <Feed />
+              <Profile />
             </RequireAuth>
           }
         />
