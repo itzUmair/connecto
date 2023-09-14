@@ -20,7 +20,12 @@ const Header = ({ profilePicURL }: { profilePicURL: string | undefined }) => {
 
   return (
     <div className="flex justify-between items-center text-content bg-primary py-2 px-4 md:px-16 relative">
-      <img src={Logo} alt="Connecto" className=" w-24 md:w-28" />
+      <img
+        src={Logo}
+        alt="Connecto"
+        className=" w-24 md:w-28 cursor-pointer"
+        onClick={() => navigate("/feed")}
+      />
       <button onClick={() => setDropDownActive((prevState) => !prevState)}>
         <img
           src={profilePicURL || PlaceholderPic}

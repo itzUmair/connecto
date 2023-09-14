@@ -3,18 +3,17 @@ import * as Types from "../Types";
 import axios from "../api/axios";
 import toast from "react-hot-toast";
 import Header from "./Header";
-import ProfileHighlight from "./ProfileHighlight";
-import Posts from "./Posts";
-import FeedSuspense from "./FeedSuspense";
-import PopularTopics from "./PopularTopics";
 import ProfilePicPlaceholder from "../assets/profile_placeholder.jpg";
 import ProfileBannerPlaceholder from "../assets/placeholder_banner.webp";
 import useUserid from "../hooks/useUserid";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState<Types.UserDetailStructure>();
   const [isLoading, setIsLoading] = useState(false);
+  const [reset, setReset] = useState<boolean>(false);
   const uid = useUserid();
+  const navigate = useNavigate();
   // const [isLiking, setIsLiking] = useState(false);
   // const [isDisLiking, setIsDisLiking] = useState(false);
 
@@ -33,7 +32,7 @@ const Profile = () => {
       }
     };
     getUserDetails();
-  }, []);
+  }, [reset]);
 
   // const likePost = async (postID: string): Promise<void> => {
   //   setIsLiking(true);
@@ -133,6 +132,74 @@ const Profile = () => {
   //   }
   // };
 
+  const isAlreadyFriend = () => {
+    if (!userDetails) return false;
+
+    for (let i = 0; i < userDetails.details.friends.length; i++) {
+      if (userDetails.details.friends[i]._id === uid) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const isRequestSent = () => {
+    if (!userDetails) return false;
+    if (userDetails.details.friendRequestsReceived.includes(uid)) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleAddFriend = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/friend/request/send", {
+        userid: uid,
+        friendid: userDetails?.details._id,
+      });
+      setReset((prev) => !prev);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveFriend = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/friend/remove", {
+        userid: uid,
+        friendid: userDetails?.details._id,
+      });
+      setReset((prev) => !prev);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelRequest = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/friend/request/cancel", {
+        userid: uid,
+        friendid: userDetails?.details._id,
+        state: "sent",
+      });
+      setReset((prev) => !prev);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="2xl:mx-auto 2xl:w-[1440px]">
       <Header profilePicURL={userDetails?.details.profilePicURL} />
@@ -176,9 +243,39 @@ const Profile = () => {
                         new Date(userDetails.details.dob).toLocaleDateString()}
                     </p>
                   </div>
-                  {uid !== userDetails.details._id && (
-                    <button className="text-content p-1 rounded-md bg-primary">
-                      Make Friend
+                  {uid !== userDetails.details._id ? (
+                    isAlreadyFriend() ? (
+                      <button
+                        onClick={handleRemoveFriend}
+                        className="text-content p-1 rounded-md bg-primary"
+                        disabled={isLoading}
+                      >
+                        Remove Friend
+                      </button>
+                    ) : isRequestSent() ? (
+                      <button
+                        onClick={handleCancelRequest}
+                        className="text-content p-1 rounded-md bg-primary"
+                        disabled={isLoading}
+                      >
+                        Cancel Request
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleAddFriend}
+                        className="text-content p-1 rounded-md bg-primary"
+                        disabled={isLoading}
+                      >
+                        Make Friend
+                      </button>
+                    )
+                  ) : (
+                    <button
+                      onClick={() => navigate("/profile/edit")}
+                      className="text-content p-1 rounded-md bg-primary"
+                      disabled={isLoading}
+                    >
+                      Edit Profile
                     </button>
                   )}
                 </div>
