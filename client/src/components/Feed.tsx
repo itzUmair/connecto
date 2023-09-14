@@ -12,7 +12,11 @@ import useUserid from "../hooks/useUserid";
 
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
-  const [profilepic, setProfilepic] = useState<string>();
+  const [userPrimaryInfo, setUserPrimaryInfo] = useState<{
+    fname: string;
+    lname: string;
+    profilePicURL: string;
+  }>();
   const [isLiking, setIsLiking] = useState(false);
   const [isDisLiking, setIsDisLiking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,9 +26,9 @@ const Feed = () => {
     setIsLoading(true);
     const getUser = async () => {
       try {
-        const responseForPP = await axios.get(`/user/profilepic/${uid}`);
+        const responseForInfo = await axios.get(`/user/userPrimaryInfo/${uid}`);
         const responseForFeed = await axios.get(`/feed/get/${uid}`);
-        setProfilepic(responseForPP.data.profilePicURL);
+        setUserPrimaryInfo(responseForInfo.data.info);
         setFeed(responseForFeed.data.feed);
         console.log(responseForFeed.data.feed);
       } catch (error) {
@@ -105,7 +109,7 @@ const Feed = () => {
     postID: string,
     comment: string
   ): Promise<void> => {
-    if (!feed) return;
+    if (!feed || !userPrimaryInfo) return;
     const oldFeed = [...feed];
     const newFeed = feed.map((post) => {
       if (post._id === postID) {
@@ -113,7 +117,7 @@ const Feed = () => {
           ...post,
           comments: [
             ...post.comments,
-            { userid: uid, timestamp: new Date(), comment },
+            { userid: userPrimaryInfo, timestamp: new Date(), comment },
           ],
         };
         return updatedPost;
@@ -137,12 +141,12 @@ const Feed = () => {
 
   return (
     <div className="2xl:mx-auto 2xl:w-[1440px]">
-      <Header profilePicURL={profilepic} />
-      <div className="px-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <Header profilePicURL={userPrimaryInfo?.profilePicURL} />
+      <div className="px-4 pb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <div className="hidden md:flex md:flex-col md:items-end md:mt-8">
           {!isLoading && <ProfileHighlight />}
         </div>
-        <div className="px-4 mt-8 col-span-4 md:col-span-2 md:col-start-2">
+        <div className="px-4 pb-16 mt-8 col-span-4 md:col-span-2 md:col-start-2 relative">
           {!isLoading &&
             feed &&
             feed.map((post, index) => (

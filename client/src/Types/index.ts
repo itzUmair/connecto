@@ -70,9 +70,13 @@ export type UserStructure = {
 };
 
 export type CommentStructure = {
-  userid: string;
   comment: string;
   timestamp: Date;
+  userid: {
+    fname: string;
+    lname: string;
+    profilePicURL: string;
+  };
 };
 
 export type PostStructure = {
