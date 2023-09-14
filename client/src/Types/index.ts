@@ -73,6 +73,7 @@ export type CommentStructure = {
   comment: string;
   timestamp: Date;
   userid: {
+    _id: string;
     fname: string;
     lname: string;
     profilePicURL: string;
@@ -85,6 +86,7 @@ export type PostStructure = {
   image: string;
   video: string;
   userid: {
+    _id: string;
     fname: string;
     lname: string;
     profilePicURL: string;

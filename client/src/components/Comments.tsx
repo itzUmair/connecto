@@ -7,7 +7,10 @@ const Comments = ({ comments }: { comments: Types.CommentStructure[] }) => {
       <h3 className="text-content font-semibold">Comments</h3>
       {comments.map((comment, index) => (
         <div key={index} className="bg-accent mb-4 py-1 rounded-md w-3/4 mt-1">
-          <div className="flex items-center gap-x-2 p-2 border-b border-content/10">
+          <a
+            href={`/profile/${comment.userid._id}`}
+            className="flex items-center gap-x-2 p-2 border-b border-content/10"
+          >
             <img
               src={
                 comment.userid.profilePicURL === ""
@@ -24,7 +27,7 @@ const Comments = ({ comments }: { comments: Types.CommentStructure[] }) => {
                 {new Date(comment.timestamp).toLocaleDateString()}
               </p>
             </div>
-          </div>
+          </a>
           <div className="text-content p-2">
             <p>{comment.comment}</p>
           </div>

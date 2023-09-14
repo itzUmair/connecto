@@ -33,7 +33,10 @@ const Posts = ({
   return (
     <>
       <div className="bg-accent mb-4 py-1 rounded-md">
-        <div className="flex items-center gap-x-2 p-2 border-b border-content/10">
+        <a
+          href={`/profile/${post.userid._id}`}
+          className="flex items-center gap-x-2 p-2 border-b border-content/10"
+        >
           <img
             src={
               post.userid.profilePicURL === ""
@@ -50,10 +53,12 @@ const Posts = ({
               {new Date(post.timestamp).toLocaleDateString()}
             </p>
           </div>
-        </div>
-        <div className="text-content p-2">{post.text}</div>
-        <div>{post.image}</div>
-        <div>{post.video}</div>
+        </a>
+        <p className="text-content p-2">{post.text}</p>
+        {post.image !== "" && <img src={post.image} className="w-full" />}
+        {post.video !== "" && (
+          <video src={post.image} controls autoPlay className="w-full" />
+        )}
         <div className="flex items-center gap-x-1 p-2">
           <p className="text-sm font text-content/60">
             {post.likes.length} {post.likes.length === 1 ? " like" : " likes"}
