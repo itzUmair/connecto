@@ -97,6 +97,48 @@ export const signup = async (req, res) => {
   }
 };
 
+export const updateProfile = async (req, res) => {
+  const {
+    userid,
+    fname,
+    mname,
+    lname,
+    city,
+    country,
+    profilePicURL,
+    profileBannerURL,
+    dob,
+    interest,
+  } = req.body;
+
+  const uid = new mongoose.Types.ObjectId(userid);
+
+  try {
+    let profile = await userDetailsModel.updateOne(
+      { _id: uid },
+      {
+        fname,
+        mname,
+        lname,
+        city,
+        country,
+        profilePicURL,
+        profileBannerURL,
+        dob,
+        interests: interest,
+      }
+    );
+    res.status(200).send({ message: "profile updated successfully" });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).send({ error: error._message });
+      return;
+    }
+    res.status(500).send({ error: "something went wrong" });
+  }
+};
+
 export const userDetails = async (req, res) => {
   const { userid } = req.params;
 
