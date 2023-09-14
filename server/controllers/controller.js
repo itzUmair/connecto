@@ -128,16 +128,16 @@ export const userHighlights = async (req, res) => {
   }
 };
 
-export const userProfilePic = async (req, res) => {
+export const userPrimaryInfo = async (req, res) => {
   const { userid } = req.params;
 
   const uid = new mongoose.Types.ObjectId(userid);
 
   try {
-    const url = await userDetailsModel
+    const info = await userDetailsModel
       .findById(uid)
-      .select({ profilePicURL: 1 });
-    res.status(200).send({ url });
+      .select({ fname: 1, lname: 1, profilePicURL: 1 });
+    res.status(200).send({ info });
   } catch (error) {
     res.status(500).send("something went wrong");
   }
