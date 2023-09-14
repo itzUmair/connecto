@@ -14,8 +14,6 @@ const Profile = () => {
   const [reset, setReset] = useState<boolean>(false);
   const uid = useUserid();
   const navigate = useNavigate();
-  // const [isLiking, setIsLiking] = useState(false);
-  // const [isDisLiking, setIsDisLiking] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -33,104 +31,6 @@ const Profile = () => {
     };
     getUserDetails();
   }, [reset]);
-
-  // const likePost = async (postID: string): Promise<void> => {
-  //   setIsLiking(true);
-  //   if (!userDetails?.posts) return;
-  //   const oldFeed = [...userDetails?.posts];
-  //   const newFeed = userDetails?.posts.map((post) => {
-  //     if (post._id === postID) {
-  //       if (!post.likes.includes(uid)) {
-  //         const updatedPost = {
-  //           ...post,
-  //           likes: [...post.likes, uid],
-  //         };
-  //         return updatedPost;
-  //       }
-  //       return post;
-  //     } else {
-  //       return post;
-  //     }
-  //   });
-  //   setFeed(newFeed);
-  //   try {
-  //     await axios.post("/post/like", {
-  //       postid: postID,
-  //       userid: uid,
-  //     });
-  //   } catch (error) {
-  //     toast.error("Something went wrong.");
-  //     setFeed(oldFeed);
-  //   } finally {
-  //     setIsLiking(false);
-  //   }
-  // };
-
-  // const disLikePost = async (postID: string): Promise<void> => {
-  //   setIsDisLiking(true);
-  //   if (!userDetails?.posts) return;
-  //   const oldFeed = [...userDetails.posts];
-  //   const newFeed = userDetails?.posts.map((post) => {
-  //     if (post._id === postID) {
-  //       if (post.likes.includes(uid)) {
-  //         const updatedPost = {
-  //           ...post,
-  //           likes: [...post.likes.filter((like) => like !== uid)],
-  //         };
-  //         return updatedPost;
-  //       }
-  //       return post;
-  //     } else {
-  //       return post;
-  //     }
-  //   });
-  //   setFeed(newFeed);
-  //   try {
-  //     await axios.post("/post/dislike", {
-  //       postid: postID,
-  //       userid: uid,
-  //     });
-  //   } catch (error) {
-  //     toast.error("Something went wrong.");
-  //     setFeed(oldFeed);
-  //   } finally {
-  //     setIsDisLiking(false);
-  //   }
-  // };
-
-  // const commentOnPost = async (
-  //   postID: string,
-  //   comment: string
-  // ): Promise<void> => {
-  //   if (!userDetails?.posts || !userPrimaryInfo) return;
-  //   const oldFeed = [...userDetails?.posts];
-  //   const newFeed = userDetails?.posts.map((post) => {
-  //     if (post._id === postID) {
-  //       const updatedPost = {
-  //         ...post,
-  //         comments: [
-  //           ...post.comments,
-  //           { userid: userPrimaryInfo, timestamp: new Date(), comment },
-  //         ],
-  //       };
-  //       return updatedPost;
-  //     } else {
-  //       return post;
-  //     }
-  //   });
-  //   setFeed(newFeed);
-  //   try {
-  //     await axios.post("/post/comment/add", {
-  //       postid: postID,
-  //       comment,
-  //       userid: uid,
-  //     });
-  //     toast.success("Comment sent!");
-  //   } catch (error) {
-  //     toast.error("Something went wrong.");
-  //     setFeed(oldFeed);
-  //   }
-  // };
 
   const isAlreadyFriend = () => {
     if (!userDetails) return false;
