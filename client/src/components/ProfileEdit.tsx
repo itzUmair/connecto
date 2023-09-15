@@ -11,6 +11,7 @@ import profileBannerPlaceholder from "../assets/placeholder_banner.webp";
 import { useNavigate } from "react-router-dom";
 import { storage } from "../firebase/firebase";
 import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import LoaderSVG from "../assets/loader.svg";
 
 const ProfileEdit = () => {
   const [userDetails, setUserDetails] = useState<Types.ProfileSettingStructure>(
@@ -45,6 +46,7 @@ const ProfileEdit = () => {
   const [selectedCity, setSelectedCity] = useState("default");
   const [selectedInterest, setSelectedInterest] = useState("default");
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [profilepic, setProfilepic] = useState<string>();
   const [profilebanner, setProfilebanner] = useState<string>();
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -184,6 +186,7 @@ const ProfileEdit = () => {
   const handleFinish = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!verifyPersonalData()) return;
+    setIsUpdating(true);
     let ppDownloadURL;
     let pbDownloadURL;
     try {
@@ -218,9 +221,13 @@ const ProfileEdit = () => {
         userid: uid,
       });
       toast.success(response.data.message);
+      setProfilepic(undefined);
+      setProfilebanner(undefined);
       setRefresh((prev) => !prev);
     } catch (error) {
       toast.error("Something went wrong");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -467,12 +474,22 @@ const ProfileEdit = () => {
             <button
               onClick={handleFinish}
               className="text-white py-2 mt-4 shadow-primary/70 shadow-lg bg-gradient-to-r from-gradient-1 to-gradient-2 disabled:opacity-50"
+              disabled={isUpdating}
             >
-              Save
+              {isUpdating ? (
+                <img
+                  src={LoaderSVG}
+                  alt="loading..."
+                  className="animate-spin opacity-100 w-6 h-6 mx-auto"
+                />
+              ) : (
+                "Save"
+              )}
             </button>
             <button
               onClick={() => navigate("/feed")}
               className="py-2 mt-4 bg-gradient-to-r from-gradient-1 to-gradient-2 text-transparent bg-clip-text font-bold disabled:cursor-not-allowed"
+              disabled={isUpdating}
             >
               Cancel
             </button>
