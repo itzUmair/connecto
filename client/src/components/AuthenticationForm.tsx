@@ -210,7 +210,7 @@ const AuthenticationForm = ({
           className="bg-transparent w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
         />
-        <a
+        <span
           onClick={() => setShowPassword((prevState) => !prevState)}
           className="text-content absolute right-5 top-7 cursor-pointer"
         >
@@ -237,7 +237,7 @@ const AuthenticationForm = ({
               <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
             </svg>
           )}
-        </a>
+        </span>
         <div
           className={`bg-accent p-1 mt-1 text-content text-sm ${
             showHint

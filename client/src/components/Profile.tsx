@@ -22,7 +22,6 @@ const Profile = () => {
       try {
         const response = await axios.get(`/user/details/${userid}`);
         setUserDetails(response.data);
-        console.log(response.data);
       } catch (error) {
         toast.error("Something went wrong");
       } finally {
@@ -122,7 +121,7 @@ const Profile = () => {
                       ? ProfilePicPlaceholder
                       : userDetails.details.profilePicURL
                   }
-                  className="w-20"
+                  className="w-20 aspect-square"
                 />
                 <div className="w-full flex justify-between items-center">
                   <div>
@@ -188,6 +187,7 @@ const Profile = () => {
                   {userDetails.details.friends.map((friend) => (
                     <a
                       href={`/profile/${friend._id}`}
+                      key={friend._id}
                       className="flex items-center gap-x-2 p-2"
                     >
                       <img

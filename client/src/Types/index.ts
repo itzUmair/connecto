@@ -70,6 +70,25 @@ export type UserStructure = {
   friendRequestsSent: string[];
 };
 
+export type ProfileSettingStructure = {
+  _id: string;
+  fname: string;
+  mname: string;
+  lname: string;
+  location: {
+    city: string;
+    country: string;
+  };
+  profilePicURL: string;
+  profileBannerURL: string;
+  friends: UserStructure[];
+  dob: Date;
+  doj: Date;
+  interests: string[];
+  friendRequestsReceived: string[];
+  friendRequestsSent: string[];
+};
+
 export type UserDetailStructure = {
   details: {
     _id: string;

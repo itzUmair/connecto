@@ -130,7 +130,6 @@ export const updateProfile = async (req, res) => {
     );
     res.status(200).send({ message: "profile updated successfully" });
   } catch (error) {
-    console.log(error);
     if (error instanceof mongoose.Error.ValidationError) {
       res.status(400).send({ error: error._message });
       return;

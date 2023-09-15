@@ -31,7 +31,6 @@ const Feed = () => {
         const responseForFeed = await axios.get(`/feed/get/${uid}`);
         setUserPrimaryInfo(responseForInfo.data.info);
         setFeed(responseForFeed.data.feed);
-        console.log(responseForFeed.data.feed);
       } catch (error) {
         toaster.error("Something went wrong. Please try again later");
       } finally {

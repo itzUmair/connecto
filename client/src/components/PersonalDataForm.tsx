@@ -187,7 +187,7 @@ const PersonalDataForm = ({
         <select
           name="country"
           value={selectedCountry}
-          className="bg-secondary w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
+          className="bg-secondary w-full border capitalize border-content p-1 text-content mt-1 focus:outline-none focus:border-primary"
           onChange={handleChange}
         >
           <option value="default">Select a country</option>
@@ -211,7 +211,7 @@ const PersonalDataForm = ({
               ? "please select a country first"
               : ""
           }
-          className="bg-secondary w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary disabled:cursor-not-allowed"
+          className="bg-secondary capitalize w-full border border-content p-1 text-content mt-1 focus:outline-none focus:border-primary disabled:cursor-not-allowed"
           onChange={handleChange}
           disabled={personalData.country.length === 0}
         >

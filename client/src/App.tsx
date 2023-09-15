@@ -7,6 +7,7 @@ import Feed from "./components/Feed";
 import Profile from "./components/Profile";
 import { useTheme } from "./context/themeContext";
 import { Toaster } from "react-hot-toast";
+import ProfileEdit from "./components/ProfileEdit";
 
 function App() {
   const { theme } = useTheme();
@@ -32,6 +33,14 @@ function App() {
           element={
             <RequireAuth loginPath="/signin">
               <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <RequireAuth loginPath="/signin">
+              <ProfileEdit />
             </RequireAuth>
           }
         />
