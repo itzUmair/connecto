@@ -16,13 +16,12 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(true);
     const userid = window.location.href.split("/").reverse()[0];
+    setIsLoading(true);
     const getUserDetails = async () => {
       try {
         const response = await axios.get(`/user/details/${userid}`);
         setUserDetails(response.data);
-        console.log(response.data);
       } catch (error) {
         toast.error("Something went wrong");
       } finally {

@@ -4,6 +4,7 @@ import useUserid from "../hooks/useUserid";
 import * as Types from "../Types";
 import BannerPlaceholder from "../assets/placeholder_banner.webp";
 import ProfilePlaceholder from "../assets/profile_placeholder.jpg";
+import toast from "react-hot-toast";
 
 const ProfileHighlight = () => {
   const [userHighlight, setUserHighlight] =
@@ -15,9 +16,8 @@ const ProfileHighlight = () => {
       try {
         const response = await axios.get(`/user/highlight/${uid}`);
         setUserHighlight(response.data);
-        console.log("high", response.data);
       } catch (error) {
-        console.log(error);
+        toast.error("Something went wrong");
       }
     };
     getUserHighlights();

@@ -103,7 +103,6 @@ const PersonalDataForm = ({
   const removeSelectedHobby = (
     e: React.MouseEvent<HTMLParagraphElement>
   ): void => {
-    console.log("Reading" !== e.currentTarget.getAttribute("data-hobby"));
     const updatedHobbies = personalData.interest.filter(
       (hobby) => hobby !== e.currentTarget.getAttribute("data-hobby")
     );

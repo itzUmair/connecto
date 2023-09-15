@@ -143,3 +143,13 @@ export type UserHighlightStructure = {
   details: UserStructure;
   posts: PostStructure[];
 };
+
+export type SearchedUser = {
+  _id: string;
+  name: string;
+  profilePicURL: string;
+  location: {
+    country: string;
+    city: string;
+  };
+};

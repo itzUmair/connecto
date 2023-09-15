@@ -148,6 +148,7 @@ const Feed = () => {
           {!isLoading && <ProfileHighlight />}
         </div>
         <div className="px-4 pb-16 mt-8 col-span-4 md:col-span-2 md:col-start-2 relative">
+          {/* TODO: Create post */}
           {!isLoading &&
             feed &&
             feed.map((post, index) => (

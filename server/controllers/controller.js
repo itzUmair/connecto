@@ -495,10 +495,18 @@ export const getCommentDetails = async (req, res) => {
 
 export const searchUser = async (req, res) => {
   const { username } = req.params;
-  const users = await userDetailsModel
-    .find()
-    .or([{ fname: username }, { mname: username }, { lname: username }]);
+  const regexPattern = new RegExp(username, "i");
 
+  const users = await userDetailsModel.aggregate([
+    {
+      $project: {
+        name: { $concat: ["$fname", " ", "$mname", " ", "$lname"] },
+        profilePicURL: "$profilePicURL",
+        location: "$location",
+      },
+    },
+    { $match: { name: { $regex: regexPattern } } },
+  ]);
   if (users.length === 0) {
     res.status(404).send({ message: "no user found" });
     return;
