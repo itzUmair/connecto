@@ -9,6 +9,7 @@ import ProfileHighlight from "./ProfileHighlight";
 import PopularTopics from "./PopularTopics";
 import FeedSuspense from "./FeedSuspense";
 import useUserid from "../hooks/useUserid";
+import SadIllustration from "../assets/sad_illustration.png";
 
 const Feed = () => {
   const [feed, setFeed] = useState<Types.PostStructure[]>();
@@ -30,7 +31,7 @@ const Feed = () => {
         const responseForInfo = await axios.get(`/user/userPrimaryInfo/${uid}`);
         const responseForFeed = await axios.get(`/feed/get/${uid}`);
         setUserPrimaryInfo(responseForInfo.data.info);
-        setFeed(responseForFeed.data.feed);
+        setFeed(responseForFeed.data.feed || []);
       } catch (error) {
         toaster.error("Something went wrong. Please try again later");
       } finally {
@@ -160,6 +161,17 @@ const Feed = () => {
                 commentOnPost={commentOnPost}
               />
             ))}
+          {!isLoading && feed && feed.length === 0 && (
+            <>
+              <img src={SadIllustration} className="w-36 mx-auto" />
+              <h3 className="text-center text-xl font-bold text-content">
+                Nothing to see here
+              </h3>
+              <p className="text-center text-content/70 pt-2 text-sm">
+                Add friends to see posts
+              </p>
+            </>
+          )}
           {isLoading &&
             [1, 2, 3, 4].map((suspense) => <FeedSuspense key={suspense} />)}
         </div>

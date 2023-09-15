@@ -105,8 +105,8 @@ export type UserDetailStructure = {
     dob: Date;
     doj: Date;
     interests: string[];
-    friendRequestsReceived: string[];
-    friendRequestsSent: string[];
+    friendRequestsReceived: UserStructure[];
+    friendRequestsSent: UserStructure[];
   };
   posts: PostStructure[];
 };

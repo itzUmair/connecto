@@ -144,7 +144,11 @@ export const userDetails = async (req, res) => {
   const uid = new mongoose.Types.ObjectId(userid);
 
   try {
-    const details = await userDetailsModel.findById(uid).populate("friends");
+    const details = await userDetailsModel
+      .findById(uid)
+      .populate("friends")
+      .populate("friendRequestsSent")
+      .populate("friendRequestsReceived");
     const posts = await postsModel.find({ userid }).sort({ timestamp: -1 });
     res.status(200).send({ details, posts });
   } catch (error) {

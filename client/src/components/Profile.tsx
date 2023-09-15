@@ -22,6 +22,7 @@ const Profile = () => {
       try {
         const response = await axios.get(`/user/details/${userid}`);
         setUserDetails(response.data);
+        console.log(response.data);
       } catch (error) {
         toast.error("Something went wrong");
       } finally {
@@ -44,8 +45,14 @@ const Profile = () => {
 
   const isRequestSent = () => {
     if (!userDetails) return false;
-    if (userDetails.details.friendRequestsReceived.includes(uid)) {
-      return true;
+    for (
+      let i = 0;
+      i < userDetails.details.friendRequestsReceived.length;
+      i++
+    ) {
+      if (userDetails.details.friendRequestsReceived[i]._id === uid) {
+        return true;
+      }
     }
     return false;
   };
@@ -82,13 +89,28 @@ const Profile = () => {
     }
   };
 
-  const handleCancelRequest = async () => {
+  const handleCancelRequest = async (fid: string) => {
     setIsLoading(true);
     try {
       const response = await axios.post("/friend/request/cancel", {
         userid: uid,
-        friendid: userDetails?.details._id,
+        friendid: fid,
         state: "sent",
+      });
+      setReset((prev) => !prev);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleAcceptRequest = async (fid: string) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/friend/request/accept", {
+        userid: uid,
+        friendid: fid,
       });
       setReset((prev) => !prev);
       toast.success(response.data.message);
@@ -153,7 +175,9 @@ const Profile = () => {
                       </button>
                     ) : isRequestSent() ? (
                       <button
-                        onClick={handleCancelRequest}
+                        onClick={() =>
+                          handleCancelRequest(userDetails.details._id)
+                        }
                         className="text-content p-1 rounded-md bg-primary"
                         disabled={isLoading}
                       >
@@ -207,6 +231,94 @@ const Profile = () => {
                   ))}
                 </div>
               </div>
+              {uid === userDetails.details._id && (
+                <div className="px-4 mt-4">
+                  <h3 className="text-content font-semibold border-b-2 border-b-accent">
+                    Friends Requests Received:&nbsp;
+                    {userDetails.details.friendRequestsReceived.length}
+                  </h3>
+                  {userDetails.details.friendRequestsReceived.length > 0 ? (
+                    <div className="max-h-36">
+                      {userDetails.details.friendRequestsReceived.map(
+                        (friend) => (
+                          <div
+                            key={friend._id}
+                            className="flex items-center justify-between gap-x-2 p-2"
+                          >
+                            <a
+                              href={`/profile/${friend._id}`}
+                              className="flex items-center gap-x-2"
+                            >
+                              <img
+                                src={
+                                  friend.profilePicURL === ""
+                                    ? ProfilePicPlaceholder
+                                    : friend.profilePicURL
+                                }
+                                className="w-8 h-8 rounded-sm"
+                              />
+                              <p className="text-content capitalize text-sm">
+                                {friend.fname + " " + friend.lname}
+                              </p>
+                            </a>
+                            <button
+                              onClick={() => handleAcceptRequest(friend._id)}
+                              className="text-content p-1 rounded-md bg-primary"
+                            >
+                              Accept
+                            </button>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-content/50">No requests received</p>
+                  )}
+                </div>
+              )}
+              {uid === userDetails.details._id && (
+                <div className="px-4 mt-4">
+                  <h3 className="text-content font-semibold border-b-2 border-b-accent">
+                    Friends Requests Sent:&nbsp;
+                    {userDetails.details.friendRequestsSent.length}
+                  </h3>
+                  {userDetails.details.friendRequestsSent.length > 0 ? (
+                    <div className="max-h-36">
+                      {userDetails.details.friendRequestsSent.map((friend) => (
+                        <div
+                          key={friend._id}
+                          className="flex items-center justify-between gap-x-2 p-2"
+                        >
+                          <a
+                            href={`/profile/${friend._id}`}
+                            className="flex items-center gap-x-2"
+                          >
+                            <img
+                              src={
+                                friend.profilePicURL === ""
+                                  ? ProfilePicPlaceholder
+                                  : friend.profilePicURL
+                              }
+                              className="w-8 h-8 rounded-sm"
+                            />
+                            <p className="text-content capitalize text-sm">
+                              {friend.fname + " " + friend.lname}
+                            </p>
+                          </a>
+                          <button
+                            onClick={() => handleCancelRequest(friend._id)}
+                            className="text-content p-1 rounded-md bg-primary z-10"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-content/50">No requests received</p>
+                  )}
+                </div>
+              )}
               <div className="px-4 pt-8">
                 <h3 className="text-content font-semibold border-b-2 border-b-accent">
                   Posts: {userDetails.posts.length}
