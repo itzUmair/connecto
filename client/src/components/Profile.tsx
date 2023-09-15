@@ -112,7 +112,7 @@ const Profile = () => {
                     ? ProfileBannerPlaceholder
                     : userDetails.details.profileBannerURL
                 }
-                className="w-full max-h-36 md:max-h-48 object-cover"
+                className="w-full h-36 md:h-48 object-cover bg-gray-500"
               />
               <div className="flex items-end gap-x-2 m-4">
                 <img

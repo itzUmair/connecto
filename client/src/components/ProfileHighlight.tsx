@@ -34,7 +34,7 @@ const ProfileHighlight = () => {
                   : userHighlight.details.profileBannerURL
               }
               alt=""
-              className="w-64 h-24 object-cover opacity-70 rounded-tr-md rounded-tl-md"
+              className="w-64 h-24 object-cover opacity-70 rounded-tr-md rounded-tl-md bg-gray-500"
             />
             <img
               src={
@@ -43,11 +43,14 @@ const ProfileHighlight = () => {
                   : userHighlight.details.profilePicURL
               }
               alt=""
-              className="w-20 h-20 object-cover mx-auto -translate-y-8 rounded-full"
+              className="w-20 h-20 object-cover mx-auto -translate-y-8 rounded-full bg-gray-500"
             />
           </div>
           <div className="flex flex-col justify-center gap-x-1 capitalize -translate-y-6">
-            <a href="/profile" className="text-center text-content font-bold">
+            <a
+              href={`/profile/${uid}`}
+              className="text-center text-content font-bold"
+            >
               {userHighlight.details.fname}
               &nbsp;
               {userHighlight.details.mname[0]}

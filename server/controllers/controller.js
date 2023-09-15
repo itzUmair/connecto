@@ -108,13 +108,13 @@ export const updateProfile = async (req, res) => {
     profilePicURL,
     profileBannerURL,
     dob,
-    interest,
+    interests,
   } = req.body;
 
   const uid = new mongoose.Types.ObjectId(userid);
 
   try {
-    let profile = await userDetailsModel.updateOne(
+    await userDetailsModel.updateOne(
       { _id: uid },
       {
         fname,
@@ -125,7 +125,7 @@ export const updateProfile = async (req, res) => {
         profilePicURL,
         profileBannerURL,
         dob,
-        interests: interest,
+        interests,
       }
     );
     res.status(200).send({ message: "profile updated successfully" });

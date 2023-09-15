@@ -5,12 +5,14 @@ import { animated, useTransition } from "react-spring";
 import { useTheme } from "../context/themeContext";
 import { useSignOut } from "react-auth-kit";
 import { useNavigate } from "react-router-dom";
+import useUserid from "../hooks/useUserid";
 
 const Header = ({ profilePicURL }: { profilePicURL: string | undefined }) => {
   const [dropDownActive, setDropDownActive] = useState<boolean>(false);
   const { theme, toggleTheme } = useTheme();
   const signout = useSignOut();
   const navigate = useNavigate();
+  const uid = useUserid();
 
   const slideIn = useTransition(dropDownActive, {
     from: { y: -20, opacity: 0 },
@@ -42,7 +44,7 @@ const Header = ({ profilePicURL }: { profilePicURL: string | undefined }) => {
               <ul className="flex flex-col gap-y-2">
                 <li>
                   <button
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate(`/profile/${uid}`)}
                     className="bg-white/20 rounded-md p-1 select-none w-full text-left"
                   >
                     Profile

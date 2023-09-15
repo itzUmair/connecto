@@ -107,7 +107,7 @@ const ProfileEdit = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target) {
-          setProfilepic(e.target.result);
+          setProfilepic(e.target.result as string);
         }
       };
       reader.readAsDataURL(droppedFiles[0]);
@@ -126,7 +126,7 @@ const ProfileEdit = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target) {
-          setProfilebanner(e.target.result);
+          setProfilebanner(e.target.result as string);
         }
       };
       reader.readAsDataURL(droppedFiles[0]);
