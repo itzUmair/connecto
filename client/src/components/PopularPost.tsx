@@ -21,10 +21,7 @@ const PopularPost = () => {
   const [isDisLiking, setIsDisLiking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const uid = useUserid();
-  const [category, setCategory] = useState<string>(
-    window.location.href.split("/").reverse()[0]
-  );
-
+  const category = window.location.href.split("/").reverse()[0];
   useEffect(() => {
     setIsLoading(true);
     const getUser = async () => {
@@ -146,6 +143,9 @@ const PopularPost = () => {
       <Header profilePicURL={userPrimaryInfo?.profilePicURL} />
       <div className="px-4 pb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <div className="px-4 pb-16 mt-8 col-span-4 md:col-span-2 md:col-start-2 relative">
+          <h3 className="text-content font-bold text-2xl text-center mb-4">
+            Category: {category}
+          </h3>
           {!isLoading &&
             feed &&
             feed.map((post, index) => (
