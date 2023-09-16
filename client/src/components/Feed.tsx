@@ -343,6 +343,7 @@ const Feed = () => {
                   <button
                     onClick={handlePost}
                     className="bg-primary px-2 py-1 text-secondary mb-2 ml-auto rounded-md"
+                    disabled={isPosting}
                   >
                     Post
                   </button>
