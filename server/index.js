@@ -5,7 +5,7 @@ import connectDB from "./database/database.js";
 import router from "./routes/routes.js";
 import {
   loggerMiddleware,
-  authenticationMiddleware,
+  // authenticationMiddleware,
 } from "./middlewares/middleware.js";
 
 const app = express();
