@@ -257,11 +257,11 @@ const Feed = () => {
   return (
     <div className="2xl:mx-auto 2xl:w-[1440px]">
       <Header profilePicURL={userPrimaryInfo?.profilePicURL} />
-      <div className="px-4 pb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+      <div className="px-2 pb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         <div className="hidden md:flex md:flex-col md:items-end md:mt-8">
           {!isLoading && <ProfileHighlight />}
         </div>
-        <div className="px-4 pb-16 mt-8 col-span-4 md:col-span-2 md:col-start-2 relative">
+        <div className="px-2 pb-16 mt-4 col-span-4 md:col-span-2 md:col-start-2 relative">
           <div className="w-full bg-accent flex flex-col items-center justify-center mb-4 p-2 rounded-md">
             <textarea
               maxLength={500}

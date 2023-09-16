@@ -81,7 +81,7 @@ const Header = ({ profilePicURL }: { profilePicURL: string | undefined }) => {
           item && (
             <animated.div
               style={style}
-              className="bg-primary p-2 rounded absolute top-16 right-4 md:right-16"
+              className="bg-primary p-2 rounded absolute top-16 right-4 md:right-16 z-50"
             >
               <ul className="flex flex-col gap-y-2">
                 <li>
