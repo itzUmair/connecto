@@ -46,7 +46,7 @@ const postSchema = new mongoose.Schema(
             },
             timestamp: {
               type: mongoose.Schema.Types.Date,
-              default: new Date(),
+              default: new Date().toLocaleString(),
               required: true,
             },
           },

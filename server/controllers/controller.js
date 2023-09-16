@@ -165,7 +165,7 @@ export const userHighlights = async (req, res) => {
     const details = await userDetailsModel.findById(uid);
     const posts = await postsModel
       .find({ userid })
-      .sort({ timestamp: 1 })
+      .sort({ timestamp: -1 })
       .limit(1);
     res.status(200).send({ details, posts });
   } catch (error) {
@@ -517,7 +517,7 @@ export const searchUser = async (req, res) => {
 
 export const popularTopics = async (req, res) => {
   try {
-    const category = await postsModel.find().select({ category: 1 }).limit(5);
+    const category = await postsModel.find().select({ category: 1 });
     const popularity = {};
     category.forEach((post) => {
       if (Object.keys(popularity).includes(post.category)) {
@@ -530,7 +530,7 @@ export const popularTopics = async (req, res) => {
       (x, y) => x[1] - y[1]
     );
 
-    res.status(200).send(sortedPopularity);
+    res.status(200).send(sortedPopularity.splice(0, 5));
   } catch (error) {
     res.status(400).send({ error });
   }

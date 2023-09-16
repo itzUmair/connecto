@@ -179,9 +179,10 @@ const Feed = () => {
       if (
         !droppedFiles[0]?.name.endsWith(".jpg") &&
         !droppedFiles[0]?.name.endsWith(".jpeg") &&
-        !droppedFiles[0]?.name.endsWith(".webp")
+        !droppedFiles[0]?.name.endsWith(".webp") &&
+        !droppedFiles[0]?.name.endsWith(".png")
       ) {
-        setError("Please provide image in .jpg, .jpeg or .webp format");
+        setError("Please provide image in .jpg, .png, .jpeg or .webp format");
         return;
       }
     } else {
@@ -245,6 +246,7 @@ const Feed = () => {
       setVideo("");
       setText("");
       setCategory("");
+      window.location.reload();
     } catch (error) {
       toast.error("Something went wrong", { id: LoadingToast });
     } finally {

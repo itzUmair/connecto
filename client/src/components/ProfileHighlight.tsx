@@ -76,7 +76,7 @@ const ProfileHighlight = () => {
                     <img
                       src={userHighlight.posts[0].image}
                       alt="post image"
-                      className="w-24"
+                      className=" w-56"
                     />
                   )}
                   {userHighlight.posts[0].video && (
@@ -84,7 +84,7 @@ const ProfileHighlight = () => {
                       src={userHighlight.posts[0].video}
                       controls
                       autoPlay={false}
-                      className="w-24"
+                      className=" w-56"
                     />
                   )}
                 </div>
