@@ -8,6 +8,7 @@ import Profile from "./components/Profile";
 import { useTheme } from "./context/themeContext";
 import { Toaster } from "react-hot-toast";
 import ProfileEdit from "./components/ProfileEdit";
+import PopularPost from "./components/PopularPost";
 
 function App() {
   const { theme } = useTheme();
@@ -41,6 +42,14 @@ function App() {
           element={
             <RequireAuth loginPath="/signin">
               <ProfileEdit />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/post/category/:category"
+          element={
+            <RequireAuth loginPath="/signin">
+              <PopularPost />
             </RequireAuth>
           }
         />

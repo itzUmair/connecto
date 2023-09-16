@@ -70,7 +70,7 @@ const ProfileHighlight = () => {
               <a href="/profile">
                 <div className="bg-primary/30 px-1 py-2 my-2 rounded-lg">
                   {userHighlight.posts[0].text && (
-                    <p>{userHighlight.posts[0].text}</p>
+                    <p className=" w-56">{userHighlight.posts[0].text}</p>
                   )}
                   {userHighlight.posts[0].image && (
                     <img

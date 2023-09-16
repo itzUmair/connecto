@@ -535,3 +535,18 @@ export const popularTopics = async (req, res) => {
     res.status(400).send({ error });
   }
 };
+
+export const postByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const posts = await postsModel
+      .find({ category })
+      .populate("userid", ["fname", "lname", "profilePicURL"])
+      .populate("comments.userid", ["fname", "lname", "profilePicURL"])
+      .sort({ timestamp: -1 });
+    res.status(200).send({ posts });
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
+};

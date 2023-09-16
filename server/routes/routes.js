@@ -25,5 +25,6 @@ router
 router.route("/user/search/:username").get(Controllers.searchUser);
 router.route("/feed/get/:userid").get(Controllers.getFeed);
 router.route("/post/popular").get(Controllers.popularTopics);
+router.route("/post/category/:category").get(Controllers.postByCategory);
 
 export default router;

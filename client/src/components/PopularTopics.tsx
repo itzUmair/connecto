@@ -35,7 +35,7 @@ const PopularTopics = () => {
               </p>
             </div>
             <a
-              href={`/post/trending/${topic[0]}`}
+              href={`/post/category/${topic[0]}`}
               className="text-content text-sm bg-white/10 px-2 py-1 rounded-full"
             >
               View

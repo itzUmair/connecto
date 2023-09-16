@@ -264,15 +264,15 @@ const Feed = () => {
         <div className="px-4 pb-16 mt-8 col-span-4 md:col-span-2 md:col-start-2 relative">
           <div className="w-full bg-accent flex flex-col items-center justify-center mb-4 p-2 rounded-md">
             <textarea
-              maxLength={200}
+              maxLength={500}
               value={text}
               name="text"
               onChange={handleChange}
               placeholder="Share what's on your mind"
               className="bg-secondary w-full border border-primary px-1 pt-1 text-content mt-1 focus:outline-none focus:border-primary"
             />
-            <div className="flex items-center w-full">
-              <span className="w-full mt-1">
+            <div className="flex items-center w-full mt-4">
+              <span className="w-full">
                 <label
                   htmlFor="image"
                   className="flex items-center justify-center text-content cursor-pointer hover:bg-content/30 transition-colors rounded-md"
