@@ -57,7 +57,12 @@ const Posts = ({
         <p className="text-content p-2">{post.text}</p>
         {post.image !== "" && <img src={post.image} className="w-full" />}
         {post.video !== "" && (
-          <video src={post.image} controls autoPlay className="w-full" />
+          <video
+            src={post.video}
+            controls
+            autoPlay={false}
+            className="w-full"
+          />
         )}
         <div className="flex items-center gap-x-1 p-2">
           <p className="text-sm font text-content/60">

@@ -330,9 +330,9 @@ const Profile = () => {
                     )}
                     {post.video !== "" && (
                       <video
-                        src={post.image}
+                        src={post.video}
                         controls
-                        autoPlay
+                        autoPlay={false}
                         className="w-full"
                       />
                     )}

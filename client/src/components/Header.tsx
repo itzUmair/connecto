@@ -62,6 +62,7 @@ const Header = ({ profilePicURL }: { profilePicURL: string | undefined }) => {
         type="search"
         value={username}
         ref={searchRef}
+        placeholder="Search"
         onFocus={() => setIsSearching(true)}
         onBlur={() => {
           setTimeout(() => setIsSearching(false), 500);
