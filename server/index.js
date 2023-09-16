@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://connecto-sm.vercel.app/",
+    origin: "https://connecto-sm.vercel.app",
     methods: "*",
     credentials: true,
   })
